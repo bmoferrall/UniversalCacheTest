@@ -1,0 +1,312 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>TestBed - Class for interacting with TestBed console</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#examples">EXAMPLES</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>TestBed - Class for interacting with TestBed console</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p>use IBM::UC::TestBed;</p>
+<p>#################
+# class methods #
+#################</p>
+<pre>
+ $ob = TestBed-&gt;new($as_cfg);
+   where:
+     $as_cfg=Access server configuration object describing Access Server propeties</pre>
+<p>The constructor initialises itself from a configuration object defining parameters
+for Access Server.</p>
+<p>#######################
+# object data methods #
+#######################</p>
+<p>### get versions ###</p>
+<pre>
+ $env = $ob-&gt;getEnv()
+ $src = $ob-&gt;source() # Source datastore
+ $tgt = $ob-&gt;target() # Target datastore
+ $home = $ob-&gt;tbHome()
+ $log = $ob-&gt;tbLog()
+ $qa = $ob-&gt;tbApprovedDir()
+ $user = $ob-&gt;tbUser()
+ $test = $ob-&gt;tbTestSingle()
+ $list = $ob-&gt;tbTestList()
+ $email = $ob-&gt;tbEmail()
+ $clean = $ob-&gt;tbClean()
+ $pfx = $ob-&gt;tbPrefix()
+ $opt = $ob-&gt;tbCmdOpt()
+ $ach = $ob-&gt;accessHost()
+ $acp = $ob-&gt;accessPort()
+ $acu = $ob-&gt;accessUser()
+ $acp = $ob-&gt;accessPass()</pre>
+<p>### set versions ###</p>
+<pre>
+ $ob-&gt;source($ds_src)           # Assign datastore as source
+ $ob-&gt;target($ds_tgt)           # Assign datastore as target
+ $ob-&gt;tbHome()
+ $ob-&gt;tbLog()
+ $ob-&gt;tbApprovedDir()
+ $ob-&gt;tbUser()
+ $ob-&gt;tbTestSingle()
+ $ob-&gt;tbTestList()
+ $ob-&gt;tbEmail()
+ $ob-&gt;tbClean()
+ $ob-&gt;tbPrefix()
+ $ob-&gt;tbCmdOpt()
+ $ob-&gt;accessHost('localhost')
+ $ob-&gt;accessPort(11011)
+ $ob-&gt;accessUser('admin')
+ $ob-&gt;accessPass('admin')</pre>
+<p>########################
+# other object methods #
+########################</p>
+<pre>
+ $ob-&gt;writeEnvironment();       # Write environment file
+ $ob-&gt;run([$tb_cfg]);           # Launch testcase(s) in Testbed
+                                # where $tb_cfg=configuration object of class TestBedConfig describing 
+                                # TestBed configuration (optional parameter)
+ $ob-&gt;processResults();         # Analyse output logs, email test results, copy logs to repository</pre>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>The TestBed module interacts with Testbed console in order to launch multiple testcases and 
+analyse the results of those testcases.</p>
+<p>The AccessServer module is intended to encapsulate the functionality of Management console:
+create source and target datastores, create subscriptions and mappings, start/stop
+replication, start/stop access server.</p>
+<p>Initialisation of a TestBed instance is via configuration parameters describing Access Server 
+properties:</p>
+<p>Valid configuration parameters and their default values follow (see AccessServerConfig.pm):</p>
+<pre>
+ ---------------------------------------------------------------------------------------------------------
+ Parameter              Description                                     Default value
+ ---------------------------------------------------------------------------------------------------------
+ ac_host                Host name/ip address of access server           localhost
+ ac_port                Communication port of access server             10101
+ ac_user                User name with rights to use access server      Admin
+ ac_pass                User password                                   admin123
+ ---------------------------------------------------------------------------------------------------------</pre>
+<p>each testcase run takes a testbed configuration object of class TestBedConfig as input. Valid testbed run
+parameters and their values follow (see TestBedConfig.pm).</p>
+<pre>
+ ---------------------------------------------------------------------------------------------------------
+ Parameter              Description                                     Default value
+ ---------------------------------------------------------------------------------------------------------
+ tb_user                Testbed testcase user name                      mooreof
+ tb_test_single         Testbed testcase name                           V46_MirrorContinuous_9999
+ tb_test_list           Testbed testcase list filename                  none
+ tb_email               Testbed testcase email contact                  mooreof@ie.ibm.com
+ tb_clean               Testbed testcase cleanup option                 1
+ tb_prefix              Testbed testcase prefix                         TB
+ ---------------------------------------------------------------------------------------------------------</pre>
+<p>if initialisation is via a configuration ini file the Testbed section must start with [TESTBED]
+and end with [/TESTBED] or end of file, e.g.:</p>
+<pre>
+ [TESTBED]</pre>
+<pre>
+ ; Test bed user 
+ tb_user=mooreof</pre>
+<pre>
+ ; Name of single test to run (blank if running multiple tests, see tb_test_list)
+ tb_test_single=V46_MirrorContinuous_9999</pre>
+<pre>
+ ; Name of file containing  multiple test cases to run. If blank, tb_test_single above is run
+ ; Assumed to be located in tb_home
+ tb_test_list=</pre>
+<pre>
+ ; Email contact(s) to whom results report is sent
+ tb_email=mooreof@ie.ibm.com</pre>
+<pre>
+ ; Testbed cleanup option (0 - Do not cleanup. 1 - Always cleanup (default). 
+ ;                         2 - Do not cleanup if test case fails or known fails or unknown passes.
+ ;                         3 - Do not cleanup if test case fails)
+ tb_clean=1</pre>
+<pre>
+ ; 2-character user prefix
+ tb_prefix=tb</pre>
+<p>
+</p>
+<hr />
+<h1><a name="examples">EXAMPLES</a></h1>
+<p>Following is an example which launches the default testcase after creating/starting databases, cdc
+instances and datastores:</p>
+<pre>
+ # Install SolidDB from server, CDC for SolidDB from CVS and run mirroring test in TestBed
+ # with Solid as source and DB2 as target
+ sub nightlies_sol_to_db2
+ {
+        my $inp;
+        my ($env_parms,$db2_params);
+        my ($db_src, $db_tgt);
+        my ($cdc_src, $cdc_tgt);
+        my ($as_cfg, $mConsole);
+        my ($ds_src, $ds_tgt);
+        my ($testbed,$tb_parms);</pre>
+<pre>
+ eval { # trap errors so we can clean up before exiting</pre>
+<pre>
+        # Initialise some environment parameters 
+         $env_parms = {
+                debug =&gt; 1,
+                smtp_server =&gt; 'D06DBE01',
+                cvs_user =&gt; 'dmbuild',
+                cvs_pass =&gt; 'dmbuild',
+                cvs_repository =&gt; ':pserver:dmbuild:dmbuild@dmccvs.torolab.ibm.com:/home/cvsuser/cvsdata',
+                cvs_home =&gt; '/home/db2inst1/cvs',
+                cvs_tag =&gt; 'BR_SJKRWLPY_2837_UC_6-5-0-0',
+                cdc_solid_root_dir =&gt; '/home/db2inst1/Transformation Server for solidDB/',
+                ant_version =&gt; 'apache-ant-1.6.2',
+                solid_root_dir =&gt; '/home/db2inst1/soliddb-6.5/',
+                solid_licence_file =&gt; '/home/db2inst1/automation_workspace/Nightlies/solid.lic',
+                testbed_head_dir =&gt; '/home/db2inst1/workspace/TestBed_HEAD/',
+                testbed_qa_approved_dir =&gt; '/home/db2inst1/workspace/QA_Approved/',
+                java_home =&gt; '/home/db2inst1/ibm-java2-i386-50',
+                java6_home =&gt; '/home/db2inst1/ibm-java-i386-60',
+        };
+        Environment-&gt;createFromConfig(EnvironmentConfig-&gt;createFromHash($env_parms));</pre>
+<pre>
+        # Install CDC for solid
+        CDCSolid-&gt;install();
+        # Install SolidDB
+        SolidDB-&gt;install();</pre>
+<pre>
+        # create and start source database
+        $db_src = SolidDB-&gt;createSimple('/home/db2inst1/solid/src',2315);
+        $db_src-&gt;start();
+        
+        # create source CDC
+        $cdc_src = CDCSolid-&gt;createSimple('solsrc_ts',11101,$db_src);</pre>
+<pre>
+        # create and start target database
+        my $db2_params = {
+                db_dir =&gt; '/home/db2inst1/db2inst1/NODE0000/TEST',
+                db_name =&gt; 'TEST',
+                db_user =&gt; 'db2inst1',
+                db_pass =&gt; 'db2inst1',
+        };
+        $db_tgt = Db2DB-&gt;createComplex($db2_params);
+        $db_tgt-&gt;start();
+        # Create target database, connect to it
+        $db_tgt-&gt;createDatabase();
+        # Create schema 
+        $db_tgt-&gt;createSchema('db2inst1');
+        
+        # create target CDC
+        $cdc_tgt = CDCDb2-&gt;createSimple('db2tgt_ts',11102,$db_tgt);</pre>
+<pre>
+        # create and start source/target cdc's
+        $cdc_src-&gt;create();
+        $cdc_tgt-&gt;create();</pre>
+<pre>
+        $cdc_src-&gt;start();
+        $cdc_tgt-&gt;start();</pre>
+<pre>
+        # Access server configuration 
+        # (config will be reused in TestBed, hence not using AccessServer-&gt;createSimple())
+        $as_cfg = {ac_host =&gt; 'localhost', # Access server host
+                                ac_port =&gt; '10101', # Access server port
+                                ac_user =&gt; 'Admin', # Access server user
+                                ac_pass =&gt; 'admin123'}; # Access server password
+        
+        # Create mConsole/Access server instance
+        $mConsole = AccessServer-&gt;createFromConfig(AccessServerConfig-&gt;createFromHash($as_cfg));</pre>
+<pre>
+        # create datastores
+        $ds_src = $mConsole-&gt;createDatastoreSimple(
+                'solsrc_ds', # datastore name
+                'Source datastore', # datastore description
+                'localhost', # datastore host
+                $cdc_src, # cdc instance
+        );
+        $ds_tgt = $mConsole-&gt;createDatastoreSimple(
+                'db2tgt_ds', # datastore name
+                'Target datastore', # datastore description
+                'localhost', # datastore host
+                $cdc_tgt,  # cdc instance
+        );
+        $mConsole-&gt;source($ds_src); # assign source datastore
+        $mConsole-&gt;target($ds_tgt); # assign target datastore
+        
+        # Following commands currently not working
+        $mConsole-&gt;assignDatastoreUser($ds_src);
+        $mConsole-&gt;assignDatastoreUser($ds_tgt);</pre>
+<pre>
+        # Testbed initialsed from access server config only, common testbed config stuff is 
+        # initialised in Environment config
+        $testbed = TestBed-&gt;new(AccessServerConfig-&gt;createFromHash($as_cfg));</pre>
+<pre>
+        # Assign source and target datastores
+        $testbed-&gt;source($ds_src);
+        $testbed-&gt;target($ds_tgt);</pre>
+<pre>
+        $testbed-&gt;writeEnvironment(); # Write environment.xml file
+                
+        # Testbed config for run() routine (all these parameters have defaults)
+        $tb_parms = {tb_user =&gt; 'mooreof', # user name
+                                 tb_test_single =&gt; 'V46_MirrorContinuous_9999', # single test name 
+                                 tb_test_list =&gt; '', # list name (to contain list of tests to run)
+                                 tb_email =&gt; 'mooreof@ie.ibm.com', # email to receive report
+                                 tb_clean =&gt; 1, # Testbed clean up option
+                                 tb_prefix =&gt; 'TB', # Testbed prefix (2-character)
+        };</pre>
+<pre>
+        # run test using parameters specified in config object
+        $testbed-&gt;run(TestBedConfig-&gt;createFromHash($tb_parms));
+        $testbed-&gt;processResults(); # parse result logs and send email
+ };</pre>
+<pre>
+ # Error thrown in eval {...}
+ if ($@) { Environment::logf(&quot;\n\nErrors found: $@\n&quot;); }</pre>
+<pre>
+        # CLEANUP
+
+</pre>
+<pre>
+        # Delete datastores
+        $mConsole-&gt;deleteDatastore($ds_tgt);
+        $mConsole-&gt;deleteDatastore($ds_src);
+
+</pre>
+<pre>
+        # stop and delete cdc instances
+        $cdc_src-&gt;stop();
+        $cdc_tgt-&gt;stop();
+        $cdc_src-&gt;delete();
+        $cdc_tgt-&gt;delete();
+
+</pre>
+<pre>
+        # shut down databases
+        $db_src-&gt;stop();
+        $db_tgt-&gt;stop();
+ }
+
+</pre>
+
+</body>
+
+</html>

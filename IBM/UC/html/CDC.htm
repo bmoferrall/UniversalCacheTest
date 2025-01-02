@@ -1,0 +1,90 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>CDC - class to implement common CDC/TS functionality as well as installation routines</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#examples">EXAMPLES</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>CDC - (Super) class to implement common CDC/TS functionality as well as installation routines</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p>use IBM::UC::CDC;</p>
+<p>#################.
+# class methods #.
+#################.</p>
+<pre>
+ $ob = CDC-&gt;new();</pre>
+<p>The constructor creates an instance encapsulating an empty CDCConfig object which must be populated by
+a subclass.</p>
+<p>#######################.
+# object data methods #.
+#######################.</p>
+<p>### get versions ###</p>
+<pre>
+ $env = $ob-&gt;getEnv()
+ $cfg = $ob-&gt;getConfig()
+ $param = $ob-&gt;getConfigParams()
+ $name = $ob-&gt;instanceName()
+ $port = $ob-&gt;instancePort()
+ $host = $ob-&gt;instanceHost()
+ $dir = $ob-&gt;CDCRootDir()
+ $db = $ob-&gt;database()
+ $cp = $ob-&gt;classPath()</pre>
+<p>### set versions ###</p>
+<pre>
+ $ob-&gt;instanceName('src_ts')
+ $ob-&gt;instancePort(11101)
+ $ob-&gt;instanceHost('localhost')
+ $ob-&gt;CDCRootDir('/home/user/Transformation for solidDB')
+ $ob-&gt;database($db)
+ $ob-&gt;classPath('xxx')</pre>
+<p>########################.
+# other object methods #.
+########################.</p>
+<pre>
+ CDC::install();        # Install CDC
+ CDC::uninstall();      # Uninstall CDC
+ $ob-&gt;create([$d]); # Create CDC instance, where $d=CDC root directory (optional)
+ $ob-&gt;delete([$d]);     # Delete CDC instance, where $d=CDC root directory (optional)
+ $ob-&gt;list([$d]);       # List available CDC instances, where $d=CDC root directory (optional)
+ $ob-&gt;update($newname,[$d]);    # Update instance name to new name
+ $ob-&gt;start([$d]);      # Start CDC instance, where $d=CDC root directory (optional)
+ $ob-&gt;stop([$d]);       # Stop CDC instance, where $d=CDC root directory (optional)
+ $ob-&gt;printout();       # Prints out readable version of object's contents (for debug purposes)</pre>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>The CDC module is a super class encapsulating common functionality for CDCs. Specific
+CDC functionality (DB2, Solid) is implemented in respective sub-classes (CDCDb2, CDCSolid, etc.).</p>
+<p>
+</p>
+<hr />
+<h1><a name="examples">EXAMPLES</a></h1>
+<p>See CDCSolid and CDCDb2 classes for examples of use.</p>
+
+</body>
+
+</html>

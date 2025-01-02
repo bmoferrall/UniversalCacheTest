@@ -1,0 +1,102 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Datastore - Class to encapsulate datastore properties</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>Datastore - Class to encapsulate datastore properties</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p>use IBM::UC::AccessServer::Datastore;</p>
+<p>#################
+# class methods #
+#################</p>
+<pre>
+ $ob = Datastore-&gt;createSimple($ds_name,$ds_desc,$ds_host,$cdc);
+   where:
+     $ds_name=datastore name
+     $ds_desc=datastore description
+     $ds_host=datastore host
+     $cdc=cdc instance associated with datastore
+ $ob = Datastore-&gt;createFromConfig($ds_cfg,$cdc);
+   where:
+     $ds_cfg=configuration object of class DatastoreConfig, describing datastore
+     $cdc=cdc instance associated with datastore</pre>
+<p>#######################
+# object data methods #
+#######################</p>
+<p>### get versions ###</p>
+<pre>
+ $nm = $ob-&gt;datastoreName()     # Name of datastore
+ $desc = $ob-&gt;datastoreDesc()   # Description of datastore
+ $host = $ob-&gt;datastoreHost()   # Host name of datastore
+ $user = $ob-&gt;datastoreUser()   # User assigned to datastore
+ $cdc = $ob-&gt;getCdc()           # CDC object associated with datastore</pre>
+<p>### set versions ###</p>
+<pre>
+ $ob-&gt;datastoreName('dsname')
+ $ob-&gt;datastoreDesc('Description')
+ $ob-&gt;datastoreHost('localhost')
+ $ob-&gt;datastoreUser('Admin')</pre>
+<p>########################
+# other object methods #
+########################</p>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>The Datastore module encapsulates the properties of a datastore.</p>
+<p>Initialisation of the Datastore object's data can be done in several ways. Default values are used for 
+object parameters not explicitly specified in the object's creation.</p>
+<p>Valid configuration parameters and their default values follow (see DatastoreConfig.pm):</p>
+<pre>
+ ---------------------------------------------------------------------------------------------------------
+ Parameter                      Description                             Default value
+ ---------------------------------------------------------------------------------------------------------
+ ds_name                        Datastore name                          src_ds
+ ds_desc                        Datastore description                   source
+ ds_host                        Datastore host                          localhost
+ ---------------------------------------------------------------------------------------------------------</pre>
+<p>if initialisation is via a configuration ini file the Datastore section must, by default, start with [DATASTORE]
+and end with [/DATASTORE] or end of file, e.g.:</p>
+<pre>
+ [DATASTORE]</pre>
+<pre>
+ ; Instance name for transformation server
+ ds_name=solsrc_ds</pre>
+<pre>
+ ; Communication port for transformation server
+ ds_desc=Source datastore
+
+</pre>
+<pre>
+ ; Communication port for transformation server
+ ds_host=localhost
+
+</pre>
+
+</body>
+
+</html>

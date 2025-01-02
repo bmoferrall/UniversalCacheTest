@@ -1,0 +1,131 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>RemoteDB - 'Database' sub-class for implementing Remote database functionality
+           Its intention is to describe a database on a remote machine, one with
+           which no interaction will take place. Therefore, the behaviour of this
+           class will be curtailed</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#examples">EXAMPLES</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>RemoteDB - 'Database' sub-class for implementing Remote database functionality
+           Its intention is to describe a database on a remote machine, one with
+           which no interaction will take place. Therefore, the behaviour of this
+           class will be curtailed (e.g. no database creation, SQL queries, etc.)</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p>use IBM::UC::Database::RemoteDB;</p>
+<p>######################################
+#           class methods            #
+######################################</p>
+<pre>
+ $ob = RemoteDB-&gt;createSimple($dbtype,$dbname,$dbuser,$dbpass,$dbschema)
+  where:
+   $dbtype=database type
+   $dbname=name of database to create or use
+   $dbuser=user name to access database
+   $dbpass=password of user
+   $dbschema=schema name to use
+   $dbport=database port number</pre>
+<pre>
+ $ob = RemoteDB-&gt;createComplex($hash_map)
+  where:
+   $hash_map=hash map of parameter name/value pairs (see below for examples)</pre>
+<pre>
+ $ob = RemoteDB-&gt;createFromConfig($config)
+  where:
+   $config=object of class DatabaseConfig (see below for examples)</pre>
+<pre>
+ $ob = RemoteDB-&gt;createFromFile($ini)
+  where:
+   $ini=configuration file</pre>
+<pre>
+ See below for examples of all the above.</pre>
+<p>######################################
+#         object data methods        #
+######################################</p>
+<p>### get versions ###</p>
+<pre>
+ See 'Database' module for remaining get methods</pre>
+<p>### set versions ###</p>
+<pre>
+ See 'Database' module for all available set methods</pre>
+<p>######################################
+#        other object methods        #
+######################################</p>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>The RemoteDB module is a sub-class of the Database super-class.
+Its intention is to describe a database on a remote machine, one with
+which no interaction will take place. Therefore, the behaviour of this
+class will be curtailed (e.g. no database creation, SQL queries, etc.)</p>
+<p>Initialisation of the database object's data can be done in several ways. Default values are used for 
+object parameters not explicitly specified in the object's creation.</p>
+<p>Valid configuration parameters and their default values follow (see DatabaseConfig.pm):</p>
+<pre>
+ ---------------------------------------------------------------------------------------------------------
+ Parameter              Description                                     Default value
+ ---------------------------------------------------------------------------------------------------------
+ db_inst                Database instance name                          Environment var 'DB2INSTANCE'
+ db_dir                 Database directory                              'NODE0000' in 'DB2INSTANCE' dir + db_name
+ db_dir_clean           delete db directory contents first (yes/no)     no
+ db_name                Database name                                   TEST
+ db_host                Database host                                   localhost
+ db_port                Database port                                   n/a
+ db_user                User name to access database                    db2admin
+ db_pass                Password for access to database                 db2admin
+ db_schema              Schema name                                     db2admin
+ db_port                Port number                                     50000
+ db_sql_output          File where sql output is redirected             sqloutput.log
+ solid_lic              Solid licence file/location                     n/a
+ solid_ini_template     Template to use in generating solid.ini         n/a
+ solid_db_inmemory      Specify whether to create in-memory database    n/a
+ ---------------------------------------------------------------------------------------------------------</pre>
+<p>if initialisation is via a configuration ini file the format is as folows:</p>
+<pre>
+ [DATABASE]</pre>
+<pre>
+ ; Type of database
+ db_type=SOLID</pre>
+<pre>
+ ; Communication port for database
+ db_port=2315</pre>
+<pre>
+ ; name of database to be created
+ db_name=TEST
+ .
+ . 
+ .
+ etc.</pre>
+<p>
+</p>
+<hr />
+<h1><a name="examples">EXAMPLES</a></h1>
+
+</body>
+
+</html>

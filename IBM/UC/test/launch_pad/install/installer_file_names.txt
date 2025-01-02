@@ -1,0 +1,13 @@
+'solidDB6.5_x86.bin'				==		SolidDB Linux 32bit		
+'solidDB6.5_x86_64.bin'				==		SolidDB Linux 64bit
+'solidDB6.5_x86.exe'				==		SolidDB Windows 32bit
+'solidDB6.5_x86.exe'				==		SolidDB Windows 32bit
+'setup-linux-x86-solid.bin'			==		CDC for Solid Linux
+'setup-win-x86-solid.exe'			==		CDC for Solid Windows
+'setup-linux-x86-udb.bin'		==		CDC for DB2 Linux
+'setup-win-x86-udb.exe'			==		CDC for DB2 Windows
+'setup-linux-x86-informix.bin'		==		CDC for IDS Linux
+'setup-win-x86-informix.exe'				==		CDC for IDS Windows
+'setup-linux-x86-accessserver.bin'	==		CDC Access Server Linux
+'setup-win-x86-accessserver.exe'	==		CDC Access Server Windows
+'setup-x86-dmclient.exe'			==		CDC Management Console Windows

@@ -1,0 +1,623 @@
+********************************************************************
+    Universal Cache: Perl automation - Functional Verification Tests
+    Updated:  March, 2010
+********************************************************************
+
+====================================================================
+CONTENTS
+====================================================================
+
+ - Description
+ - Prerequisites to run tests
+ - Preparation for Tests
+ - Test 1 (Mirror from Solid Source to Solid Target)
+ - Test 2 (Mirror from Solid Source to DB2 Target)
+ - Test 3 (Mirror from Db2 Source to Solid Target)
+ - Test 4 (Mirror from Informix Source to Solid Target)
+ - Test 5 (Refresh from Solid Source to Solid Target)
+ - Test 6 (Refresh from Solid Source to DB2 Target)
+ - Test 7 (Refresh from DB2 Source to Solid Target)
+ - Test 8 (UC Utilities Interface Test - Solid to Solid)
+ - Test 9 (UC Utilities Interface Test - Solid to DB2)
+ - Test 10 (Mirror from Solid Source to Solid Target - batch mode)
+ - Test 11 (Mirror from Solid Source to Solid Target - batch mode xml)
+
+
+====================================================================
+DESCRIPTION
+====================================================================
+
+The automation tests outlined below are designed to verify that 
+supported automation features in Universal Cache work as they are 
+specified to do.
+
+The key elements in the test are the command-line interfaces 
+dmInstanceManager and dmSubscriptionManager, and the perl automation 
+framework. The dmInstanceManager and dmSubscriptionManager interfaces
+allow many of the features of Universal Cache to be implemented via
+the command-line rather than via the various GUIs.
+
+Key features that will be tested here:
+ - Create Solid/DB2/Informix database instances
+ - Execute SQL on Solid/DB2/Informix databases
+ - Create and start Solid/DB2/Informix CDC Transformation Server instances
+ - Create source and target datastores
+ - Create subscriptions and simple mappings from source to target datastores
+ - Initiate mirroring between source and target and verify that
+   it has taken place
+ - Demonstrate a refresh between source and target datastores
+ - Clean up: delete subscriptions, datastores and CDC instances
+ 
+The tests are stored in the directory '%LIBPATH%/IBM/UC/test/functional_tests',
+where %LIBPATH% is the path to the framework.
+
+====================================================================
+PREREQUISITES TO RUN SAMPLES
+====================================================================
+
+ - Operating system is Windows- or Linux-based
+ - An up-to-date version of perl is installed on the system
+   (version 5.8.8 on Linux machines, Active Perl on Windows machines)
+ - Current version of Perl automation framework is checked out from
+   6.5 branch on CVS
+ - The Perl framework is installed in a location where Perl 
+   can find it;
+   i.e., in one of the perl include paths, e.g. %PERL_ROOT%/site/lib.
+   Alternatively, start perl with the -I %LIBPATH% option (include path), 
+   where %LIBPATH% is the parent directory of the framework.
+ - Access Server is installed and running in the background, and an 
+   admin account has been created. The Windows installation of Access
+   Server will create an admin account and start it running in the
+   background; on Linux systems, an Admin account must be created 
+   manually and the server started
+   Ensure that the access server parameters used to run the tests match
+   the user name and password of the admin account (see 'Preparation
+   for Tests' section below for details)
+ - SolidDB is installed
+ - A valid solid license file is available (its location must be
+   specified in the environment configuration of the samples)
+ - DB2 is installed
+ - Informix is installed
+ - Transformation Server for Solid is installed
+ - Transformation Server for DB2 is installed
+ - Transformation Server for Informix is installed
+ - Java 5 is installed
+ - Paths to all the above must be set correctly in the environment 
+   configuration (see 'Preparation for Tests' section below for details)
+ - For the second sample, DB2 and Transformation Server for DB2 must 
+   both be installed
+ - On Linux the user should have DB2 admin rights (ideally, log in as
+   user 'db2inst1')
+ - On Windows machines, tests involving DB2 should be run inside a DB2 
+   command window
+
+====================================================================
+PREPARATION FOR TESTS
+====================================================================
+
+For convenience, all configuration information for the tests is stored
+in *.ini files.
+
+All environment-specific information is loaded from a single file 
+'environment.ini'. This contains linux and windows sections.
+All information in these sections must be valid for the machine on which
+the tests are being run.
+
+Each individual test will get its configuration information from a 
+particular *.ini file. For example, the Solid to DB2 mirror and refresh
+tests will take their configuration information from sol_to_db2.ini.
+Each ini file is divided into sections; eg. source database information
+is in a section [DATABASE_SRC], target database information is
+in a section [DATABASE_TGT], source CDC information is in a
+section [CDC_SRC], etc. Most of the values specified should be ok as is.
+However, you will probably need to change the parameter db_dir (database
+directory) in source and target database sections to reflect the host
+operating system (and current user in the case of linux). In particular,
+for tests involving DB2, db_dir should reflect where DB2 will create
+the database you specify: /home/user/DB2INSTANCE/NODE0000/DBNAME for 
+linux systems and c:\DB2INSTANCE\NODE0000\DBNAME for windows systems
+(where DB2INSTANCE is the active instance name and DBNAME is the name
+of the database to be created).
+
+
+====================================================================
+TEST 1 (MIRROR FROM SOLID SOURCE TO SOLID TARGET)
+====================================================================
+
+Test 1 is called 'mirror_sol_to_sol.pl'.
+
+Ensure that initialisation files environment.ini and sol_to_sol.ini are 
+configured correctly.
+
+Open a command windows and change to the directory 
+'%LIBPATH%/IBM/UC/test/functional_tests', where %LIBPATH% is the path
+to the framework.
+Run the command <perl -I %LIBPATH% mirror_sol_to_sol.pl'>
+You can leave out the -I %LIBPATH% if the framework is installed in one
+of the standard perl include paths (e.g. %PERL_ROOT%/site/lib)
+
+This test will create two solid databases in different directories.
+It will create a table 'SRC' in the source database and a table 'TGT' in
+the target database.
+Source and target CDC Solid instances will be created and started.
+You will be prompted to make sure access server is running.
+Source and target datastores will be created.
+A subscription called 'subname' will be created and a mapping
+from source table to target table will be added.
+Three rows of data will be inserted into the source table:
+	1 'One'
+	2 'Two'
+	3 'Three'
+
+Mirroring will then be started. A 'select *' on the target table will be
+executed and the output log opened in notepad or gedit.
+If all goes well, the contents of the target table should match that of the 
+source table.
+
+If everything runs successfully, you will be prompted to start a cleanup.
+This should restore the system to its original state, with the exception
+that both source and target databases will remain.
+If an error occurs during the test, the test will jump to the cleanup 
+section. In most cases, the cleanup will successfully reverse what was 
+created and started. If there are errors reported in the cleanup,
+you many need to manually clean up (for example, delete an orphaned CDC
+instance).
+
+====================================================================
+TEST 2 (MIRROR FROM SOLID SOURCE TO DB2 TARGET)
+====================================================================
+
+Test 2 is called 'mirror_sol_to_db2.pl'.
+
+Ensure that initialisation files environment.ini and sol_to_db2.ini are 
+configured correctly.
+
+Open a command windows and change to the directory 
+'%LIBPATH%/IBM/UC/test/functional_tests', where %LIBPATH% is the path
+to the framework.
+Run the command <perl -I %LIBPATH% mirror_sol_to_db2.pl'>
+You can leave out the -I %LIBPATH% if the framework is installed in one
+of the standard perl include paths (e.g. %PERL_ROOT%/site/lib)
+
+This test will create solid and DB2 databases.
+It will create a table 'SRC' in the source database and a table 'TGT' in
+the target database.
+Source and target CDC Solid instances will be created and started.
+You will be prompted to make sure access server is running.
+Source and target datastores will be created.
+A subscription called 'subname' will be created and a mapping
+from source table to target table will be added.
+Three rows of data will be inserted into the source table:
+	1 'One'
+	2 'Two'
+	3 'Three'
+
+Mirroring will then be started. A 'select *' on the target table will be
+executed and the output log opened in notepad or gedit.
+If all goes well, the contents of the target table should match that of the 
+source table.
+
+If everything runs successfully, you will be prompted to start a cleanup.
+This should restore the system to its original state, with the exception
+that both source and target databases will remain.
+If an error occurs during the test, the test will jump to the cleanup 
+section. In most cases, the cleanup will successfully reverse what was 
+created and started. If there are errors reported in the cleanup,
+you many need to manually clean up (for example, delete an orphaned CDC
+instance).
+
+====================================================================
+TEST 3 (MIRROR FROM DB2 SOURCE TO SOLID TARGET)
+====================================================================
+
+Test 3 is called 'mirror_db2_to_sol.pl'.
+
+Ensure that initialisation files environment.ini and db2_to_sol.ini are 
+configured correctly.
+
+Open a command windows and change to the directory 
+'%LIBPATH%/IBM/UC/test/functional_tests', where %LIBPATH% is the path
+to the framework.
+Run the command <perl -I %LIBPATH% mirror_db2_to_sol.pl'>
+You can leave out the -I %LIBPATH% if the framework is installed in one
+of the standard perl include paths (e.g. %PERL_ROOT%/site/lib)
+
+This test will create DB2 and Solid databases.
+It will create a table 'SRC' in the source database and a table 'TGT' in
+the target database.
+Source and target CDC Solid instances will be created and started.
+You will be prompted to make sure access server is running.
+Source and target datastores will be created.
+A subscription called 'subname' will be created and a mapping
+from source table to target table will be added.
+Three rows of data will be inserted into the source table:
+	1 'One'
+	2 'Two'
+	3 'Three'
+
+Mirroring will then be started. A 'select *' on the target table will be
+executed and the output log opened in notepad or gedit.
+If all goes well, the contents of the target table should match that of the 
+source table.
+
+If everything runs successfully, you will be prompted to start a cleanup.
+This should restore the system to its original state, with the exception
+that both source and target databases will remain.
+If an error occurs during the test, the test will jump to the cleanup 
+section. In most cases, the cleanup will successfully reverse what was 
+created and started. If there are errors reported in the cleanup,
+you many need to manually clean up (for example, delete an orphaned CDC
+instance).
+
+====================================================================
+TEST 4 (MIRROR FROM INFORMIX SOURCE TO SOLID TARGET)
+====================================================================
+
+Test 4 is called 'mirror_ids_to_sol.pl'.
+
+Ensure that initialisation files environment.ini and ids_to_sol.ini are 
+configured correctly.
+
+Open a command windows and change to the directory 
+'%LIBPATH%/IBM/UC/test/functional_tests', where %LIBPATH% is the path
+to the framework.
+Run the command <perl -I %LIBPATH% mirror_ids_to_sol.pl'>
+You can leave out the -I %LIBPATH% if the framework is installed in one
+of the standard perl include paths (e.g. %PERL_ROOT%/site/lib)
+
+This test will create Informix and Solid databases.
+It will create a table 'SRC' in the source database and a table 'TGT' in
+the target database.
+Source and target CDC Solid instances will be created and started.
+You will be prompted to make sure access server is running.
+Source and target datastores will be created.
+A subscription called 'subname' will be created and a mapping
+from source table to target table will be added.
+Three rows of data will be inserted into the source table:
+	1 'One'
+	2 'Two'
+	3 'Three'
+
+Mirroring will then be started. A 'select *' on the target table will be
+executed and the output log opened in notepad or gedit.
+If all goes well, the contents of the target table should match that of the 
+source table.
+
+If everything runs successfully, you will be prompted to start a cleanup.
+This should restore the system to its original state, with the exception
+that both source and target databases will remain.
+If an error occurs during the test, the test will jump to the cleanup 
+section. In most cases, the cleanup will successfully reverse what was 
+created and started. If there are errors reported in the cleanup,
+you many need to manually clean up (for example, delete an orphaned CDC
+instance).
+
+====================================================================
+TEST 5 (REFRESH FROM SOLID SOURCE TO SOLID TARGET)
+====================================================================
+
+Test 5 is called 'refresh_sol_to_sol.pl'.
+
+Ensure that initialisation files environment.ini and sol_to_sol.ini are 
+configured correctly.
+
+Open a command windows and change to the directory 
+'%LIBPATH%/IBM/UC/test/functional_tests', where %LIBPATH% is the path
+to the framework.
+Run the command <perl -I %LIBPATH% refresh_sol_to_sol.pl'>
+You can leave out the -I %LIBPATH% if the framework is installed in one
+of the standard perl include paths (e.g. %PERL_ROOT%/site/lib)
+
+This test will create two solid databases in different directories.
+It will create a table 'SRC' in the source database and a table 'TGT' in
+the target database.
+Source and target CDC Solid instances will be created and started.
+You will be prompted to make sure access server is running.
+Source and target datastores will be created.
+A subscription called 'subname' will be created and a mapping
+from source table to target table will be added.
+The subscription will be flagged for refresh.
+Three rows of data will be inserted into the source table:
+	1 'One'
+	2 'Two'
+	3 'Three'
+
+A refresh is initiated on the subscription.
+A 'select *' on the target table will be executed and the output log 
+opened in notepad or gedit.
+If all goes well, the contents of the target table should match that of the 
+source table.
+
+If everything runs successfully, you will be prompted to start a cleanup.
+This should restore the system to its original state, with the exception
+that both source and target databases will remain.
+If an error occurs during the test, the test will jump to the cleanup 
+section. In most cases, the cleanup will successfully reverse what was 
+created and started. If there are errors reported in the cleanup,
+you many need to manually clean up (for example, delete an orphaned CDC
+instance).
+
+
+====================================================================
+TEST 6 (REFRESH FROM SOLID SOURCE TO DB2 TARGET)
+====================================================================
+
+Test 6 is called 'refresh_sol_to_db2.pl'.
+
+Ensure that initialisation files environment.ini and sol_to_db2.ini are 
+configured correctly.
+
+Open a command windows and change to the directory 
+'%LIBPATH%/IBM/UC/test/functional_tests', where %LIBPATH% is the path
+to the framework.
+Run the command <perl -I %LIBPATH% refresh_sol_to_db2.pl'>
+You can leave out the -I %LIBPATH% if the framework is installed in one
+of the standard perl include paths (e.g. %PERL_ROOT%/site/lib)
+
+This test will create solid and DB2 databases.
+It will create a table 'SRC' in the source database and a table 'TGT' in
+the target database.
+Source and target CDC Solid instances will be created and started.
+You will be prompted to make sure access server is running.
+Source and target datastores will be created.
+A subscription called 'subname' will be created and a mapping
+from source table to target table will be added.
+The subscription will be flagged for refresh.
+Three rows of data will be inserted into the source table:
+	1 'One'
+	2 'Two'
+	3 'Three'
+
+A refresh is initiated on the subscription.
+A 'select *' on the target table will be executed and the output log 
+opened in notepad or gedit.
+If all goes well, the contents of the target table should match that of the 
+source table.
+
+If everything runs successfully, you will be prompted to start a cleanup.
+This should restore the system to its original state, with the exception
+that both source and target databases will remain.
+If an error occurs during the test, the test will jump to the cleanup 
+section. In most cases, the cleanup will successfully reverse what was 
+created and started. If there are errors reported in the cleanup,
+you many need to manually clean up (for example, delete an orphaned CDC
+instance).
+
+====================================================================
+TEST 7 (REFRESH FROM DB2 SOURCE TO SOLID TARGET)
+====================================================================
+
+Test 7 is called 'refresh_db2_to_sol.pl'.
+
+Ensure that initialisation files environment.ini and db2_to_sol.ini are 
+configured correctly.
+
+Open a command windows and change to the directory 
+'%LIBPATH%/IBM/UC/test/functional_tests', where %LIBPATH% is the path
+to the framework.
+Run the command <perl -I %LIBPATH% refresh_db2_to_sol.pl'>
+You can leave out the -I %LIBPATH% if the framework is installed in one
+of the standard perl include paths (e.g. %PERL_ROOT%/site/lib)
+
+This test will create DB2 and Solid databases.
+It will create a table 'SRC' in the source database and a table 'TGT' in
+the target database.
+Source and target CDC Solid instances will be created and started.
+You will be prompted to make sure access server is running.
+Source and target datastores will be created.
+A subscription called 'subname' will be created and a mapping
+from source table to target table will be added.
+The subscription will be flagged for refresh.
+Three rows of data will be inserted into the source table:
+	1 'One'
+	2 'Two'
+	3 'Three'
+
+A refresh is initiated on the subscription.
+A 'select *' on the target table will be executed and the output log 
+opened in notepad or gedit.
+If all goes well, the contents of the target table should match that of the 
+source table.
+
+If everything runs successfully, you will be prompted to start a cleanup.
+This should restore the system to its original state, with the exception
+that both source and target databases will remain.
+If an error occurs during the test, the test will jump to the cleanup 
+section. In most cases, the cleanup will successfully reverse what was 
+created and started. If there are errors reported in the cleanup,
+you many need to manually clean up (for example, delete an orphaned CDC
+instance).
+
+====================================================================
+TEST 8 (UC UTILITIES INTERFACE TEST USING SOLID SOURCE AND TARGET
+====================================================================
+
+Test 8 is called 'ucutils_test_sol_to_sol.pl'.
+
+Ensure that initialisation files environment.ini and sol_to_sol.ini are 
+configured correctly.
+
+Open a command windows and change to the directory 
+'%LIBPATH%/IBM/UC/test/functional_tests', where %LIBPATH% is the path
+to the framework.
+Run the command <perl -I %LIBPATH% ucutils_test_sol_to_sol.pl'>
+You can leave out the -I %LIBPATH% if the framework is installed in one
+of the standard perl include paths (e.g. %PERL_ROOT%/site/lib)
+
+This test will create two Solid databases.
+It will create a table 'SRC' in the source database and a table 'TGT' in
+the target database.
+Source and target CDC Solid instances will be created and started.
+
+A list of current active CDC instances will be output.
+You will be prompted to enter a new name for the source CDC instance.
+The source CDC instance is stopped, renamed and restarted.
+A list of active CDC instances is again output. This should reflect
+the change in name of the source.
+
+You will be prompted to make sure access server is running.
+Source and target datastores will be created.
+A subscription called 'subname' will be created and a mapping
+from source table to target table will be added.
+
+A list of active subscriptions is output. This should show the subscription
+just created called 'subname'
+You will be prompted to press <enter> to continue.
+
+Three rows of data will be inserted into the source table:
+	1 'One'
+	2 'Two'
+	3 'Three'
+
+Mirroring will then be started. A 'select *' on the target table will 
+be executed and the output log opened in notepad or gedit.
+
+If everything runs successfully, you will be prompted to start a cleanup.
+This should restore the system to its original state, with the exception
+that both source and target databases will remain.
+If an error occurs during the test, the test will jump to the cleanup 
+section. In most cases, the cleanup will successfully reverse what was 
+created and started. If there are errors reported in the cleanup,
+you many need to manually clean up (for example, delete an orphaned CDC
+instance).
+
+====================================================================
+TEST 9 (UC UTILITIES INTERFACE TEST USING SOLID SOURCE AND DB2 TARGET
+====================================================================
+
+Test 9 is called 'ucutils_test_sol_to_db2.pl'.
+
+Ensure that initialisation files environment.ini and sol_to_db2.ini are 
+configured correctly.
+
+Open a command windows and change to the directory 
+'%LIBPATH%/IBM/UC/test/functional_tests', where %LIBPATH% is the path
+to the framework.
+Run the command <perl -I %LIBPATH% ucutils_test_sol_to_db2.pl'>
+You can leave out the -I %LIBPATH% if the framework is installed in one
+of the standard perl include paths (e.g. %PERL_ROOT%/site/lib)
+
+This test will create Solid and DB2 databases.
+It will create a table 'SRC' in the source database and a table 'TGT' in
+the target database.
+Source and target CDC Solid instances will be created and started.
+
+A list of current active CDC instances will be output.
+You will be prompted to enter a new name for the source CDC instance.
+The source CDC instance is stopped, renamed and restarted.
+A list of active CDC instances is again output. This should reflect
+the change in name of the source.
+
+You will be prompted to make sure access server is running.
+Source and target datastores will be created.
+A subscription called 'subname' will be created and a mapping
+from source table to target table will be added.
+
+A list of active subscriptions is output. This should show the subscription
+just created called 'subname'
+You will be prompted to press <enter> to continue.
+
+Three rows of data will be inserted into the source table:
+	1 'One'
+	2 'Two'
+	3 'Three'
+
+Mirroring will then be started. A 'select *' on the target table will 
+be executed and the output log opened in notepad or gedit.
+
+If everything runs successfully, you will be prompted to start a cleanup.
+This should restore the system to its original state, with the exception
+that both source and target databases will remain.
+If an error occurs during the test, the test will jump to the cleanup 
+section. In most cases, the cleanup will successfully reverse what was 
+created and started. If there are errors reported in the cleanup,
+you many need to manually clean up (for example, delete an orphaned CDC
+instance).
+
+====================================================================
+TEST 10 (MIRROR FROM SOLID SOURCE TO SOLID TARGET - BATCH MODE)
+====================================================================
+
+Test 10 is called 'mirror_sol_to_sol_batch.pl'.
+
+Ensure that initialisation files environment.ini and sol_to_sol.ini are 
+configured correctly.
+
+Open a command windows and change to the directory 
+'%LIBPATH%/IBM/UC/test/functional_tests', where %LIBPATH% is the path
+to the framework.
+Run the command <perl -I %LIBPATH% mirror_sol_to_sol.pl'>
+You can leave out the -I %LIBPATH% if the framework is installed in one
+of the standard perl include paths (e.g. %PERL_ROOT%/site/lib)
+
+This test will create two solid databases in different directories.
+It will create 100 tables 'SRC#' in the source database and 100 table 'TGT#'
+in the target database.
+Source and target CDC Solid instances will be created and started.
+You will be prompted to make sure access server is running.
+Source and target datastores will be created.
+A subscription called 'subname' will be created and 100 mappings
+from each source table to each target table will be added.
+These 100 table mappings are imported from the text file tablemappings.txt.
+Three rows of data will be inserted into each source table:
+	1 'One'
+	2 'Two'
+	3 'Three'
+
+Mirroring will then be started. A 'select *' on each of the 100 target tables
+will be executed and the output log opened in notepad or gedit.
+If all goes well, the contents of the target tables should match that of the 
+source tables.
+
+If everything runs successfully, you will be prompted to start a cleanup.
+This should restore the system to its original state, with the exception
+that both source and target databases will remain.
+If an error occurs during the test, the test will jump to the cleanup 
+section. In most cases, the cleanup will successfully reverse what was 
+created and started. If there are errors reported in the cleanup,
+you many need to manually clean up (for example, delete an orphaned CDC
+instance).
+
+====================================================================
+TEST 11 (MIRROR FROM SOLID SOURCE TO SOLID TARGET - BATCH MODE XML)
+====================================================================
+
+Test 11 is called 'mirror_sol_to_sol_batch_xml.pl'.
+
+Ensure that initialisation files environment.ini and sol_to_sol.ini are 
+configured correctly.
+
+Open a command windows and change to the directory 
+'%LIBPATH%/IBM/UC/test/functional_tests', where %LIBPATH% is the path
+to the framework.
+Run the command <perl -I %LIBPATH% mirror_sol_to_sol.pl'>
+You can leave out the -I %LIBPATH% if the framework is installed in one
+of the standard perl include paths (e.g. %PERL_ROOT%/site/lib)
+
+This test will create two solid databases in different directories.
+It will create 100 tables 'SRC#' in the source database and 100 table 'TGT#'
+in the target database.
+Source and target CDC Solid instances will be created and started.
+You will be prompted to make sure access server is running.
+Source and target datastores will be created.
+A subscription called 'subname' will be created and 100 mappings
+from each source table to each target table will be added.
+These 100 table mappings are imported from the xml file tablemappings.xml.
+Three rows of data will be inserted into each source table:
+	1 'One'
+	2 'Two'
+	3 'Three'
+
+Mirroring will then be started. A 'select *' on each of the 100 target tables
+will be executed and the output log opened in notepad or gedit.
+If all goes well, the contents of the target tables should match that of the 
+source tables.
+
+If everything runs successfully, you will be prompted to start a cleanup.
+This should restore the system to its original state, with the exception
+that both source and target databases will remain.
+If an error occurs during the test, the test will jump to the cleanup 
+section. In most cases, the cleanup will successfully reverse what was 
+created and started. If there are errors reported in the cleanup,
+you many need to manually clean up (for example, delete an orphaned CDC
+instance).

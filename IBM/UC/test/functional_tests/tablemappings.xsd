@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ibm.com/universalcache" xmlns="http://www.ibm.com/universalcache" elementFormDefault="qualified">
+	<xsd:element name="tablemappings">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="subscription" type="subscriptionType" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="subscriptionType">
+		<xsd:sequence>
+			<xsd:element name="tablemapping" type="tableMappingType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="tableMappingType">
+		<xsd:sequence>
+			<xsd:element name="table" type="tableType" minOccurs="2" maxOccurs="2"/>
+			<xsd:element name="columnmappings" type="columnMappingsType" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="tableType">
+		<xsd:attribute name="type" type="mapType" use="required"/>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:simpleType name="mapType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="source|target"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="columnMappingsType">
+		<xsd:sequence>
+			<xsd:element name="columnmapping" type="columnMappingType" minOccurs="1" maxOccurs="100"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="columnMappingType">
+		<xsd:sequence>
+			<xsd:element name="column" type="columnType" minOccurs="2" maxOccurs="2"/>
+			<xsd:element name="other" type="otherType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="columnType">
+		<xsd:attribute name="type" type="mapType" use="required"/>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<!-- element "other" is a dummy placeholder for future unspecified content -->
+	<xsd:simpleType name="otherType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+</xsd:schema>

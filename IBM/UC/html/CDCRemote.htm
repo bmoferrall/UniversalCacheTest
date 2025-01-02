@@ -1,0 +1,105 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>CDCRemote - Class designed to describe a CDC instance on a remote
+            machine; thus, it will have different behavour
+            to a normal CDC instance</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>CDCRemote - Class designed to describe a CDC instance on a remote
+            machine; thus, it will have different (curtailed) behavour
+            to a normal CDC instance</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p>use IBM::UC::CDC::CDCRemote;</p>
+<p>#################
+# class methods #
+#################</p>
+<pre>
+ $ob = CDCRemote-&gt;createFromConfig($cdc_cfg,$db);
+   where:
+     $cdc_cfg=configuration object of class CDCConfig describing cdc instance
+     $db=database instance of class RemoteDB</pre>
+<p>This constructor initialises itself from a configuration object defining parameters 
+for the CDC instance, and the encapsulated Remote database object.</p>
+<pre>
+ $ob = CDCRemote-&gt;createSimple($cdc_name, $cdc_port, $cdc_host, $db);
+   where:
+     $cdc_name=name of this cdc instance
+     $cdc_port=port number for this cdc instance
+     $cdc_host=host name where cdc instance lives
+     $db=database instance of class RemoteDB</pre>
+<p>This constructor initialises itself with a cdc instance name, port number and
+host name, and the encapsulated Remote database object.</p>
+<p>#######################
+# object data methods #
+#######################</p>
+<p>### get versions ###</p>
+<pre>
+ See CDC super class for available get methods</pre>
+<p>### set versions ###</p>
+<pre>
+ See CDC super class for available set methods</pre>
+<p>########################
+# other object methods #
+########################</p>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>The CDCRemote module is a sub class of CDC, and is designed to describe a
+CDC instance on a remote machine. The object behaves differently to a normal
+CDC instance in that the instance cannot be created, started, stopped, deleted,
+etc.</p>
+<p>Initialisation of the CDCRemote object's data can be done in several ways. Default values are used for 
+object parameters not explicitly specified in the object's creation.</p>
+<p>Valid configuration parameters and their default values follow (see CDCConfig.pm):</p>
+<pre>
+ ---------------------------------------------------------------------------------------------------------
+ Parameter              Description                                     Default value
+ ---------------------------------------------------------------------------------------------------------
+ ts_name                CDC instance name                               src_ts
+ ts_port                CDC instance communication port                 11101
+ ts_host                CDC instance host name                  localhost
+ ts_home                CDC root directory                              Environment module default 
+ ---------------------------------------------------------------------------------------------------------</pre>
+<p>if initialisation is via a configuration ini file the format is as follows:</p>
+<pre>
+ [CDC]</pre>
+<pre>
+ ; Instance name for transformation server
+ ts_name=solsrc_ts</pre>
+<pre>
+ ; Communication port for transformation server
+ ts_port=11101</pre>
+<pre>
+ ; Host name of transformation server
+ ts_host=localhost
+ 
+=head1 EXAMPLES</pre>
+
+</body>
+
+</html>

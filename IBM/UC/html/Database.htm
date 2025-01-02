@@ -1,0 +1,118 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Database - class to implement database functionality</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#examples">EXAMPLES</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>Database - (super) class to implement database functionality</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p>use IBM::UC::Database;</p>
+<p>#################
+# class methods #
+#################</p>
+<pre>
+ $ob = Database-&gt;new($ini);
+   where:
+     $ini=configuration file (optional parameter)</pre>
+<p>#######################
+# object data methods #
+#######################</p>
+<p>### get versions ###</p>
+<pre>
+ $env = $ob-&gt;getEnv()
+ $ini = $ob-&gt;getIniFileName()
+ $cfg = $ob-&gt;getConfig()
+ $cfg = $ob-&gt;getConfigParams()
+ $inst = $ob-&gt;instanceName()
+ $dbdir = $ob-&gt;dbDir()
+ $clean = $ob-&gt;dbDirClean()
+ $name = $ob-&gt;dbName()
+ $host = $ob-&gt;dbHost()
+ $port = $ob-&gt;dbPort()
+ $user = $ob-&gt;dbUser()
+ $pass = $ob-&gt;dbPass()
+ $sch = $ob-&gt;dbSchema()
+ $type = $ob-&gt;dbType()
+ $tbl = $ob-&gt;dbTableName()
+ $sqlo = $ob-&gt;dbSqlOutputFile()</pre>
+<p>### set versions ###</p>
+<pre>
+ $ob-&gt;instanceName('name')
+ $ob-&gt;dbDir('/home/user/dbdir')
+ $ob-&gt;dbDirClean(1)
+ $ob-&gt;dbName('dbname')
+ $ob-&gt;dbHost('localhost')
+ $ob-&gt;dbPort(2315)
+ $ob-&gt;dbUser('dba')
+ $ob-&gt;dbPass('dba')
+ $ob-&gt;dbSchema('dba')
+ $ob-&gt;dbType('SOLID')
+ $ob-&gt;dbTableName('tbl')                # set table name to replace %TABLE% placeholder in sql files
+ $ob-&gt;dbSqlOutputFile(0[,'sql.log'])</pre>
+<p>########################
+# other object methods #
+########################</p>
+<pre>
+ $ob-&gt;createStorage()           Empty method to be implemented by sub-class
+ $ob-&gt;start()                   Empty method to be implemented by sub-class
+ $ob-&gt;stop()                    Empty method to be implemented by sub-class
+ $ob-&gt;createInstance()          Empty method to be implemented by sub-class
+ $ob-&gt;deleteInstance()          Empty method to be implemented by sub-class
+ $ob-&gt;createDatabase([$name])   Empty method to be implemented by sub-class
+ $ob-&gt;deleteDatabase([$name])   Empty method to be implemented by sub-class
+ $ob-&gt;createSchema([$name])     Empty method to be implemented by sub-class
+ $ob-&gt;deleteSchema([$name])     Empty method to be implemented by sub-class
+ $ob-&gt;connectToDatabase([$name])Empty method to be implemented by sub-class
+ $ob-&gt;prepareSql()              Replaces placeholders in SQL file, where:
+                                %DB%=Database name
+                                %SCHEMA%=Schema name
+                                %TABLE%=Table name 
+ $ob-&gt;execSql(sql)              Empty method to be implemented by sub-class
+ $ob-&gt;execSqlStmt(sql)          Empty method to be implemented by sub-class
+ $ob-&gt;printout()                printout readable version of object's contents 
+                                (for debug purposes only)</pre>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>The Database class is a superclass intended to implement common methods 
+for launching a database manager, creating a database instance, 
+creating a database and associated storage, executing batch sql commands, 
+optionally deleting the created database and finally shutting down the database manager.
+
+</p>
+<p>
+</p>
+<hr />
+<h1><a name="examples">EXAMPLES</a></h1>
+<p>See SolidDB and DB2DB classes for examples of use.
+
+</p>
+
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>DatastoreConfig - helper class for DataStore module, loads and stores configuration info 
+			for Datastore instances.</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p><table cellspacing="0" cellpadding="0"><tr><td>DatastoreConfig - helper class (sub-class of Config) for DataStore module, loads and stores configuration info 
+<tr><td><td>for Datastore instances.</table></p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p>use IBM::UC::UCConfig::DatastoreConfig;</p>
+<p>#################
+# class methods #
+#################</p>
+<pre>
+ $ob = DatastoreConfig-&gt;new($ini);
+   where:
+     $ini=configuration file (optional parameter)
+ $ob = DatastoreConfig-&gt;createFromHash($cfg);
+   where:
+     $cfg=hash reference of parameter name/value pairs</pre>
+<p>#######################
+# object data methods #
+#######################</p>
+<p>### get versions ###</p>
+<p>see base class Config</p>
+<p>### set versions ###</p>
+<p>see base class Config</p>
+<p>########################
+# other object methods #
+########################</p>
+<p>see base class Config</p>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>The DatastoreConfig class is a helper class for the Datastore module. It stores configuration information
+(parameter name/value pairs) for use by its encapsulating class. Initialisation of the config 
+object can be via a configuration file (initFromConfigFile()) or via a hash map reference
+(initFromConfig($hashRef)).
+
+</p>
+
+</body>
+
+</html>

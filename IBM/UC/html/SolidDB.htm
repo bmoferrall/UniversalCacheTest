@@ -1,0 +1,381 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>SolidDB - 'Database' sub-class for implementing SolidDB-specific functionality</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#examples">EXAMPLES</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>SolidDB - 'Database' sub-class for implementing SolidDB-specific functionality</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p>use IBM::UC::Database::SolidDB;</p>
+<p>######################################
+#           class methods            #
+######################################</p>
+<pre>
+ $ob = SolidDB-&gt;createSimple([$dbdir,$dbport,$dblic])
+  where:
+   $dbdir=database directory
+   $dbport=port number for database (optional parameter)
+   $dblic=name of solid licence file (optional parameter)</pre>
+<pre>
+ All parameters are optional, but those present must be in the specified order. Parameters not specified
+ all get default values</pre>
+<pre>
+ $ob = SolidDB-&gt;createComplex($hash_map)
+  where:
+   $hash_map=hash map of parameter name/value pairs (see below for examples)</pre>
+<pre>
+ $ob = SolidDB-&gt;createFromConfig($config)
+  where:
+   $config=object of class DatabaseConfig (see below for examples)</pre>
+<pre>
+ $ob = SolidDB-&gt;createFromFile($ini)
+  where:
+   $ini=configuration file</pre>
+<pre>
+ See below for examples of all the above.</pre>
+<pre>
+ SolidDB-&gt;install([i_to,i_from]) (or SolidDB::install)
+  Class method to install solid db where:
+   i_to (optional) specifies the installation directory
+   i_from (optional) specifies the name and path of the package to install
+   Both parameters are defaulted in the environment module</pre>
+<p>######################################
+#         object data methods        #
+######################################</p>
+<p>### get versions ###</p>
+<pre>
+ $lic = $ob-&gt;licenceName()        # Name of solidDb licence file
+ $temp = $ob-&gt;templateName()      # Name of solidDb initialisation file
+ $inmem = $ob-&gt;inMemoryDatabase() # In-memory rather than disk-based database</pre>
+<pre>
+ See 'Database' module for remaining get methods</pre>
+<p>### set versions ###</p>
+<pre>
+ See 'Database' module for all available set methods</pre>
+<p>######################################
+#        other object methods        #
+######################################</p>
+<pre>
+ $ob-&gt;start();                  Creates directories and copy files as necessary,
+                                starts SolidDB database manager and creates solid database
+ $ob-&gt;stop();                   Shuts down database manager
+ $ob-&gt;execSql(file);    Executes batch sql statements from file
+                                (if no path is specified the current directory is assumed)
+                                %DB% and %TABLE% can be used as placeholders for dbName() and dbTableName()
+ $ob-&gt;execSqlStmt(sql)          Executes single sql statement</pre>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>The SolidDB module is a sub-class of the Database super-class. Its purpose is to implement functionality
+specific to Solid databases: create a Solid database and associated storage, launch the Solid database 
+manager, execute sql commands and, finally, shut down the database manager.</p>
+<p>Initialisation of the database object's data can be done in several ways. Default values are used for 
+object parameters not explicitly specified in the object's creation.</p>
+<p>Valid configuration parameters and their default values follow (see DatabaseConfig.pm):</p>
+<pre>
+ ---------------------------------------------------------------------------------------------------------
+ Parameter              Description                                     Default value
+ ---------------------------------------------------------------------------------------------------------
+ db_inst                Database instance name                          dba_src
+ db_dir                 Database directory name                         current directory + sol_src
+ db_dir_clean           delete directory contents first (yes/no)        yes
+ db_name                Database name                                   dba
+ db_host                Database host                                   localhost
+ db_port                Database port                                   2315
+ db_user                User name to access database                    dba
+ db_pass                Password for access to database                 dba
+ db_schema              Schema name                                     DBA
+ db_sql_output          File where sql output is redirected             sqloutput.log
+ solid_lic              Solid licence file/location                     Value taken from Environment.pm
+ solid_ini_template     Template to use in generating solid.ini         solid_template.ini (curr dir)
+                        Placeholders &lt;_port_&gt; and &lt;_inmem_&gt; will be
+                        replaced with db_port and solid_db_inmemory
+                        If not provided a default version of solid.ini
+                        is generated                    
+ solid_db_inmemory      Specify whether to create in-memory database    no
+ ---------------------------------------------------------------------------------------------------------</pre>
+<p>if initialisation is via a configuration ini file the Database section must, by default, start with [DATABASE]
+and end with [/DATABASE] or end of file, e.g.:</p>
+<pre>
+ [DATABASE]</pre>
+<pre>
+ ; Database Instance name
+ db_inst=dba_src</pre>
+<pre>
+ ; Database path
+ db_dir=/home/db2inst1/automation_workspace/Nightlies/sol_src</pre>
+<pre>
+ ; Specify whether to delete db_dir and its contents at startup (yes|no)
+ db_dir_clean=yes</pre>
+<pre>
+ ; Host name where database is located
+ db_host=localhost</pre>
+<pre>
+ ; Communication port for database
+ db_port=2315</pre>
+<pre>
+ ; name of database to be created
+ db_name=Solid
+ .
+ .
+ .
+ etc.</pre>
+<p>
+</p>
+<hr />
+<h1><a name="examples">EXAMPLES</a></h1>
+<p>Following are examples demonstrating the different ways a SolidDB object can be created:</p>
+<pre>
+ # Create database object from zero or more fixed order parameters
+ # Parameters are all optional but those present must be in correct order
+ # Parameters not included in the list get default values 
+ sub create_simple
+ {
+        # Parameters: database directory, port number, solid licence file
+        my $source = SolidDB-&gt;createSimple('/tmp/src',2318,'mysolid.lic');
+        $source-&gt;printout(); # verify contents of object</pre>
+<pre>
+        # As these parameters are optional you could just call:
+        $source = SolidDB-&gt;createSimple();
+        $source-&gt;printout();
+        # Default values will be assigned to all parameters in this case</pre>
+<pre>
+        # If you provide less than 4 parameters they must be in the correct order
+        $source = SolidDB-&gt;createSimple('/tmp/src');
+        $source-&gt;printout();
+        return $source;
+ }</pre>
+<pre>
+ # Create database object from hash map. Any number of valid parameter names can be used
+ # If a parameter name isn't recognised the program aborts and prints a full list of valid parameters
+ # As before, default values are assigned to parameters not explicitly specified
+ sub create_complex
+ {
+        my $source = SolidDB-&gt;createComplex({db_port =&gt; '2319', db_dir =&gt; '/home/db2inst1/solid/src',
+                                             db_name =&gt; 'test', db_user =&gt; 'user', db_pass =&gt; 'mypass',
+                                             db_schema =&gt; 'myschema'});
+        $source-&gt;printout();
+        return $source;
+ }</pre>
+<pre>
+ # Create config object from hash map and use it to create solid database object
+ sub create_from_config
+ {
+        my $cfg_values = { 
+                db_port =&gt; '2317', 
+                db_dir =&gt; '/home/db2inst1/solid/sol_tgt',
+        };
+        my $source = SolidDB-&gt;createFromConfig(DatabaseConfig-&gt;createFromHash($cfg_values));
+        $source-&gt;printout();
+        return $source;
+ }</pre>
+<pre>
+ # Create config object from configuration file and use it to create database object
+ sub create_from_config_ini
+ {
+        my $ini = shift;
+        my $sol_cfg = DatabaseConfig-&gt;new($ini);</pre>
+<pre>
+        $sol_cfg-&gt;initFromConfigFile();
+        my $source = SolidDB-&gt;createFromConfig($sol_cfg);
+        $source-&gt;printout();
+        return $source;
+ }</pre>
+<pre>
+ # Create database object directly from configuration file
+ sub create_from_file
+ {
+        my $ini = shift;
+        my $source = SolidDB-&gt;createFromFile($ini);
+        $source-&gt;printout();
+        return $source;
+ }</pre>
+<p>A typical sequence of calls to create a SolidDB instance, start solid database manager, 
+execute sql and shut down the manager would be:</p>
+<pre>
+ sub create_and_run_solid
+ {
+        # Initialise environment
+        my $env_cfg_vals = {
+                smtp_server =&gt; 'D06DBE01',
+                cdc_solid_root_dir =&gt; '/home/user/Transformation Server for solidDB',
+                testbed_head_dir =&gt; '/home/user/workspace/TestBed_HEAD/',
+        };
+        Environment-&gt;createFromConfig(EnvironmentConfig-&gt;createFromHash($env_cfg_vals));
+        
+        my $cfg_values = { 
+                db_port =&gt; '2317', 
+                db_dir =&gt; '/home/db2inst1/solid/sol_tgt',
+        };
+        my $source = SolidDB-&gt;createFromConfig(DatabaseConfig-&gt;createFromHash($cfg_values));</pre>
+<pre>
+        $source-&gt;start();
+        # Set table name for sql file, %TABLE% placeholder in *.sql file will be replaced by it 
+        $source-&gt;dbTableName('src');
+        $source-&gt;execSql('sol_createsrc.sql');
+        my $sql = &quot;insert into src values (val1,val2,val3)&quot;;
+        $source-&gt;execSqlStmt($sql);
+        $source-&gt;execSql('sol_insertsrc.sql'); 
+        $source-&gt;stop();
+ }</pre>
+<p>An example of automating the creation of source and target databases, setting up replication between
+tables in the databases and verifying that replication has taken place would be as follows:</p>
+<pre>
+ # Create subscription and mirror between Solid source and Solid target
+ sub replication_sol_to_sol
+ {
+        my $inp;
+        my ($env_parms,$dbvals_src,$dbvals_tgt);
+        my ($db_src, $db_tgt);
+        my ($cdc_src, $cdc_tgt);
+        my ($as_cfg, $mConsole);
+        my ($ds_src, $ds_tgt);
+        my $sub = 'subname';</pre>
+<pre>
+ eval { # trap errors so we can clean up before exiting</pre>
+<pre>
+        $env_parms = {
+                debug =&gt; 1,
+                smtp_server =&gt; 'D06DBE01',
+                cvs_user =&gt; 'dmbuild',
+                cvs_pass =&gt; 'dmbuild',
+                cvs_repository =&gt; ':pserver:dmbuild:dmbuild@dmccvs.torolab.ibm.com:/home/cvsuser/cvsdata',
+                cvs_home =&gt; '/home/db2inst1/cvs',
+                cvs_tag =&gt; 'HEAD',
+                cdc_solid_root_dir =&gt; '/home/db2inst1/Transformation Server for solidDB/',
+                ant_version =&gt; 'apache-ant-1.6.2',
+                solid_root_dir =&gt; '/home/db2inst1/soliddb-6.5/',
+                solid_licence_file =&gt; '/home/db2inst1/automation_workspace/Nightlies/solid.lic',
+                java_home =&gt; '/home/DownloadDirector/ibm-java2-i386-50/',
+                java6_home =&gt; '/home/DownloadDirector/ibm-java-i386-60/',
+        };
+        Environment-&gt;createFromConfig(EnvironmentConfig-&gt;createFromHash($env_parms));</pre>
+<pre>
+        # create and start source database
+        $dbvals_src = { 
+                db_port =&gt; '2315', 
+                db_dir =&gt; '/home/db2inst1/solid/sol_src',
+        };
+        $db_src = SolidDB-&gt;createFromConfig(DatabaseConfig-&gt;createFromHash($dbvals_src));
+        $db_src-&gt;start();</pre>
+<pre>
+        # create and start target database
+        $dbvals_tgt = { 
+                db_port =&gt; '2316', 
+                db_dir =&gt; '/home/db2inst1/solid/sol_tgt',
+        };
+        $db_tgt = SolidDB-&gt;createFromConfig(DatabaseConfig-&gt;createFromHash($dbvals_tgt));
+        $db_tgt-&gt;start();</pre>
+<pre>
+        # Set source and target table names for sql files
+        # %TABLE% in sql files will be replaced with table names specified here
+        $db_src-&gt;dbTableName('src');
+        $db_tgt-&gt;dbTableName('tgt');
+        $db_src-&gt;execSql('sol_createsrc.sql');  # Create table 'src'
+        $db_tgt-&gt;execSql('sol_createtgt.sql');  # Create table 'tgt'
+        
+        # create source CDC
+        $cdc_src = CDCSolid-&gt;createSimple('solsrc_ts',11101,$db_src);</pre>
+<pre>
+        # create target CDC
+        $cdc_tgt = CDCSolid-&gt;createSimple('soltgt_ts',11102,$db_tgt);</pre>
+<pre>
+        # create and start source/target cdc's
+        $cdc_src-&gt;create();
+        $cdc_tgt-&gt;create();
+        $cdc_src-&gt;start();
+        $cdc_tgt-&gt;start();</pre>
+<pre>
+        # Access server configuration 
+        $as_cfg = {ac_host =&gt; 'localhost',      # Access server host
+                                  ac_port =&gt; '10101',   # Access server port
+                                  ac_user =&gt; 'Admin',   # Access server user
+                                  ac_pass =&gt; 'admin123'};       # Access server password
+        
+        # Create mConsole/Access server instance
+        $mConsole = AccessServer-&gt;createFromConfig(AccessServerConfig-&gt;createFromHash($as_cfg));</pre>
+<pre>
+        # create datastores
+        $ds_src = $mConsole-&gt;createDatastoreSimple(
+                'solsrc_ds',            # datastore name
+                'Source datastore',     # datastore description
+                'localhost',            # datastore host
+                $cdc_src,               # cdc instance
+        );
+        $ds_tgt = $mConsole-&gt;createDatastoreSimple(
+                'soltgt_ds',            # datastore name
+                'Target datastore',     # datastore description
+                'localhost',            # datastore host
+                $cdc_tgt,               # cdc instance
+        );
+        $mConsole-&gt;source($ds_src);     # assign source datastore
+        $mConsole-&gt;target($ds_tgt);     # assign target datastore
+        
+        $mConsole-&gt;assignDatastoreUser($ds_src);
+        $mConsole-&gt;assignDatastoreUser($ds_tgt);</pre>
+<pre>
+        $mConsole-&gt;createSubscription($sub);    # Create subscription between source and target datastores
+        $mConsole-&gt;addMapping($sub);            # Add default mapping to subscription
+        $mConsole-&gt;startMirroring($sub);        # Start mirroring</pre>
+<pre>
+        $db_src-&gt;execSql('sol_insertsrc.sql');  # Insert rows into source table
+        sleep(15);                              # Allow mirroring to take effect
+        $db_tgt-&gt;execSql('sol_readtgt.sql');    # Read target table</pre>
+<pre>
+ };</pre>
+<pre>
+ # Error thrown in eval {...}
+ if ($@) { Environment::logf(&quot;\n\nErrors found: $@\n&quot;); }</pre>
+<pre>
+        # CLEANUP</pre>
+<pre>
+        $mConsole-&gt;stopMirroring($sub);         # Stop mirroring
+        $mConsole-&gt;deleteMapping($sub);         # Delete mapping
+        $mConsole-&gt;deleteSubscription($sub);    # Delete subscription</pre>
+<pre>
+        # Delete datastores
+        $mConsole-&gt;deleteDatastore($ds_tgt);
+        $mConsole-&gt;deleteDatastore($ds_src);</pre>
+<pre>
+        # stop and delete cdc instances
+        $cdc_src-&gt;stop();
+        $cdc_tgt-&gt;stop();
+        $cdc_src-&gt;delete();
+        $cdc_tgt-&gt;delete();</pre>
+<pre>
+        # shut down databases
+        $db_src-&gt;stop();
+        $db_tgt-&gt;stop();
+ }</pre>
+<p>If everything works as expected source and target tables should have the same content.
+
+</p>
+
+</body>
+
+</html>

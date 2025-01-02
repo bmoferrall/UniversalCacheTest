@@ -1,0 +1,299 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>AccessServer - Wrapper class encapsulating Management Console functions</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#examples">EXAMPLES</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>AccessServer - Wrapper class encapsulating Management Console functions</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p>use IBM::UC::AccessServer::AccessServer;</p>
+<p>#################
+# Class methods #
+#################</p>
+<pre>
+ $ob = AccessServer-&gt;createFromConfig($as_cfg);
+   where:
+     $as_cfg=Access server configuration object of class AccessServerConfig</pre>
+<pre>
+ $ob = AccessServer-&gt;createSimple([$as_host, $as_port, $as_user, $as_pass]);
+   where:
+     $as_host=Access server host name (optional parameter)
+     $as_port=Access server host port (optional parameter)
+     $as_user=Access server user name (optional parameter)
+     $as_pass=Access server password (optional parameter)</pre>
+<pre>
+ # Install access server
+ AccessServer-&gt;install($install_to, $install_from) or AccessServer::install
+  where:
+   $install_to=installation directory
+   $install_from=source installation package
+   
+#######################
+# object data methods #
+#######################</pre>
+<p>### get versions ###</p>
+<pre>
+ $env = $ob-&gt;getEnv()
+ $src = $ob-&gt;source()
+ $tgt = $ob-&gt;target()
+ $nm = $ob-&gt;subName()
+ $ach = $ob-&gt;accessHost()
+ $acp = $ob-&gt;accessPort()
+ $acu = $ob-&gt;accessUser()
+ $acp = $ob-&gt;accessPass()
+ $cp = $ob-&gt;classPath()</pre>
+<p>### set versions ###</p>
+<pre>
+ $ob-&gt;subName('name')
+ $ob-&gt;accessHost('localhost')
+ $ob-&gt;accessPort(11011)
+ $ob-&gt;accessUser('admin')
+ $ob-&gt;accessPass('admin')
+ $ob-&gt;classPath('xxx')</pre>
+<p>########################
+# other object methods #
+########################</p>
+<pre>
+ $ob = createDatastoreFromConfig($ds_cfg,$cdc);                 # Create datastore where:
+                                                                #       $ds_cfg=config. object (DatastoreConfig) describing datastore
+                                                                #       $cdc=CDC instance (e.g. CDCSolid, CDCDb2)
+ $ob = createDatastoreSimple($ds_name,$ds_desc,$ds_host,$cdc);  # Create datastore where:
+                                                                #       $ds_name=datastore name
+                                                                #       $ds_desc=datastore description
+                                                                #       $ds_host=datastore host
+                                                                #       $cdc=CDC instance (e.g. CDCSolid, CDCDb2)
+ $ob-&gt;deleteDatastore($ds)              # Delete datastore $ds
+ $ob-&gt;assignDatastoreUser($ds)          # Assign user to datastore $ds
+ $ob-&gt;createSubscription([$name])       # Create named subscription ($name optional)
+ $ob-&gt;deleteSubscription([$name])       # Delete named subscription ($name optional)
+ $ob-&gt;flagForRefresh($ds,$tbl,[$name])  # Flag table in subscription for refresh, where:
+                                        # $ds=datastore
+                                        # $tbl=table to flag for refresh
+                                        # $name=subscription name (optional)
+ $ob-&gt;refreshSubscription($ds,[$name])  # Initiate a refresh for subscription, where:
+                                        # $ds=datastore
+                                        # $name=subscription name (optional)
+ $ob-&gt;addMapping([$name,$srct,$tgtt])   # Add mapping to subscription, where:
+                                        #  $name=subscription name (optional)
+                                        #  $srct=source table (optional)
+                                        #  $tgtt=target table (optional)
+ $ob-&gt;deleteMapping([$name])            # Delete mapping for named subscription ($name optional)
+ $ob-&gt;startMirroring([$name])           # Start mirroring for named subscription ($name optional)
+ $ob-&gt;stopMirroring([$name])            # Stop mirroring for named subscription ($name optional)
+ $ob-&gt;deleteMapping([$name])            # Delete mapping for named subscription
+ $ob-&gt;startAccessServer()               # Start access server
+ $ob-&gt;stopAccessServer()                # Stop access server
+ $ob-&gt;restartAccessServer()             # Restart access server
+ $ob-&gt;createAdminUser()         # Create Administrator user account</pre>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>The AccessServer module is intended to encapsulate the functionality of Management console:
+create source and target datastores, create subscriptions and mappings, start/stop
+replication, start/stop access server.</p>
+<p>Initialisation of an AccessServer instance is via configuration parameters describing Access Server 
+properties:</p>
+<p>Valid configuration parameters and their default values follow (see AccessServerConfig.pm):</p>
+<pre>
+ ---------------------------------------------------------------------------------------------------------
+ Parameter              Description                                             Default value
+ ---------------------------------------------------------------------------------------------------------
+ ac_host                Host name/ip address of access server                   localhost
+ ac_port                Communication port of access server                     10101
+ ac_user                User name with rights to use access server              Admin
+ ac_pass                User password                                           admin123
+ ---------------------------------------------------------------------------------------------------------</pre>
+<p>if initialisation is via a configuration ini file the AccessServer section must, by default, start with [ACCESSSERVER]
+and end with [/ACCESSSERVER] or end of file, e.g.:</p>
+<pre>
+ [ACCESSSERVER]</pre>
+<pre>
+ ; Host name/ip address for access server
+ ac_host=localhost</pre>
+<pre>
+ ; Communication port for access server
+ ac_port=10101</pre>
+<pre>
+ ; User/Password for access server
+ ac_user=Admin
+ ac_pass=admin123</pre>
+<p>
+</p>
+<hr />
+<h1><a name="examples">EXAMPLES</a></h1>
+<p>An example of automating the creation of source and target databases, setting up replication between
+tables in the databases and verifying that replication has taken place would be as follows:</p>
+<pre>
+ # Create subscription and mirror between Solid source and DB2 target
+ sub replication_sol_to_db2
+ {
+        my $inp;
+        my ($env_parms,$dbvals_src,$dbvals_tgt);
+        my ($db_src, $db_tgt);
+        my ($cdc_src, $cdc_tgt);
+        my ($as_cfg, $mConsole);
+        my ($ds_src, $ds_tgt);
+        my $sub = 'subname';</pre>
+<pre>
+ eval { # trap errors so we can clean up before exiting</pre>
+<pre>
+        $env_parms = {
+                debug =&gt; 1,
+                smtp_server =&gt; 'D06DBE01',
+                cvs_user =&gt; 'dmbuild',
+                cvs_pass =&gt; 'dmbuild',
+                cvs_repository =&gt; ':pserver:dmbuild:dmbuild@dmccvs.torolab.ibm.com:/home/cvsuser/cvsdata',
+                cvs_home =&gt; '/home/db2inst1/cvs',
+                cvs_tag =&gt; 'HEAD',
+                cdc_solid_root_dir =&gt; '/home/db2inst1/Transformation Server for solidDB/',
+                ant_version =&gt; 'apache-ant-1.6.2',
+                solid_root_dir =&gt; '/home/db2inst1/soliddb-6.5/',
+                solid_licence_file =&gt; '/home/db2inst1/automation_workspace/Nightlies/solid.lic',
+                java_home =&gt; '/home/DownloadDirector/ibm-java2-i386-50/',
+                java6_home =&gt; '/home/DownloadDirector/ibm-java-i386-60/',
+        };
+        Environment-&gt;createFromConfig(EnvironmentConfig-&gt;createFromHash($env_parms));</pre>
+<pre>
+        # create and start source database
+        $dbvals_src = { 
+                db_port =&gt; '2315', 
+                db_dir =&gt; '/home/db2inst1/solid/sol_src',
+        };
+        $db_src = SolidDB-&gt;createFromConfig(DatabaseConfig-&gt;createFromHash($dbvals_src));
+        $db_src-&gt;start();</pre>
+<pre>
+        # create and start target database
+        $dbvals_tgt = { 
+                db_dir =&gt; '/home/db2inst1/db2inst1/NODE0000/TEST',
+                db_name =&gt; 'TEST',
+                db_user =&gt; 'db2inst1',
+                db_pass =&gt; 'db2inst1',
+        };
+        $db_tgt = Db2DB-&gt;createFromConfig(DatabaseConfig-&gt;createFromHash($dbvals_tgt));
+        $db_tgt-&gt;start();
+        # Create database also connects to database
+        $db_tgt-&gt;createDatabase();
+        # Create target schema
+        $db_tgt-&gt;createSchema('db2inst1');</pre>
+<pre>
+        # Set source and target table names for sql files
+        # %TABLE% in sql file will be replaced with name here
+        $db_src-&gt;dbTableName('src');
+        $db_tgt-&gt;dbTableName('tgt');
+        $db_src-&gt;execSql('sol_createsrc.sql');  # Create table 'src'
+        $db_tgt-&gt;execSql('db2_createtgt.sql');  # Create table 'tgt'
+        
+        # create source CDC
+        $cdc_src = CDCSolid-&gt;createSimple('solsrc_ts',11101,$db_src);</pre>
+<pre>
+        # create target CDC
+        $cdc_tgt = CDCDb2-&gt;createSimple('db2tgt_ts',11102,$db_tgt);</pre>
+<pre>
+        # create and start source/target cdc's
+        $cdc_src-&gt;create();
+        $cdc_tgt-&gt;create();
+        $cdc_src-&gt;start();
+        $cdc_tgt-&gt;start();</pre>
+<pre>
+        # Access server configuration 
+        $as_cfg = {ac_host =&gt; 'localhost',      # Access server host
+                                  ac_port =&gt; '10101',   # Access server port
+                                  ac_user =&gt; 'Admin',   # Access server user
+                                  ac_pass =&gt; 'admin123'};       # Access server password
+        
+        # Create mConsole/Access server instance
+        $mConsole = AccessServer-&gt;createFromConfig(AccessServerConfig-&gt;createFromHash($as_cfg));</pre>
+<pre>
+        # create datastores
+        $ds_src = $mConsole-&gt;createDatastoreSimple(
+                'solsrc_ds',            # datastore name
+                'Source datastore',     # datastore description
+                'localhost',            # datastore host
+                $cdc_src,               # cdc instance
+        );
+        $ds_tgt = $mConsole-&gt;createDatastoreSimple(
+                'db2tgt_ds',            # datastore name
+                'Target datastore',     # datastore description
+                'localhost',            # datastore host
+                $cdc_tgt,               # cdc instance
+        );
+        $mConsole-&gt;source($ds_src);     # assign source datastore
+        $mConsole-&gt;target($ds_tgt);     # assign target datastore
+        
+        $mConsole-&gt;assignDatastoreUser($ds_src);
+        $mConsole-&gt;assignDatastoreUser($ds_tgt);</pre>
+<pre>
+        $mConsole-&gt;createSubscription($sub);    # Create subscription between source and target datastores
+        $mConsole-&gt;addMapping($sub);            # Add default mapping to subscription
+        $mConsole-&gt;startMirroring($sub);        # Start mirroring</pre>
+<pre>
+        $db_src-&gt;execSql('sol_insertsrc.sql');  # Insert rows into source table
+        sleep(15);                              # Allow mirroring to take effect
+        $db_tgt-&gt;execSql('db2_readtgt.sql');    # Read target table</pre>
+<pre>
+ };</pre>
+<pre>
+ # Error thrown in eval {...}
+ if ($@) { Environment::logf(&quot;\n\nErrors found: $@\n&quot;); }
+
+</pre>
+<pre>
+        # CLEANUP
+
+</pre>
+<pre>
+        $mConsole-&gt;stopMirroring($sub);         # Stop mirroring
+        $mConsole-&gt;deleteMapping($sub);         # Delete mapping
+        $mConsole-&gt;deleteSubscription($sub);    # Delete subscription
+
+</pre>
+<pre>
+        # Delete datastores
+        $mConsole-&gt;deleteDatastore($ds_tgt);
+        $mConsole-&gt;deleteDatastore($ds_src);
+
+</pre>
+<pre>
+        # stop and delete cdc instances
+        $cdc_src-&gt;stop();
+        $cdc_tgt-&gt;stop();
+        $cdc_src-&gt;delete();
+        $cdc_tgt-&gt;delete();
+
+</pre>
+<pre>
+        # shut down databases
+        $db_src-&gt;stop();
+        $db_tgt-&gt;stop();
+ }
+
+</pre>
+
+</body>
+
+</html>

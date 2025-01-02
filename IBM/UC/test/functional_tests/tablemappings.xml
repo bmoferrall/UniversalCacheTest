@@ -1,0 +1,405 @@
+<?xml version="1.0"?>
+<tablemappings xmlns="http://www.ibm.com/universalcache" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ibm.com/universalcache tablemappings.xsd">
+	<subscription name="SUBNAME">
+		<tablemapping>
+			<table type="source" name="DBA.SRC"/>
+			<table type="target" name="DBA.TGT"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC1"/>
+			<table type="target" name="DBA.TGT1"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC2"/>
+			<table type="target" name="DBA.TGT2"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC3"/>
+			<table type="target" name="DBA.TGT3"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC4"/>
+			<table type="target" name="DBA.TGT4"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC5"/>
+			<table type="target" name="DBA.TGT5"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC6"/>
+			<table type="target" name="DBA.TGT6"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC7"/>
+			<table type="target" name="DBA.TGT7"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC8"/>
+			<table type="target" name="DBA.TGT8"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC9"/>
+			<table type="target" name="DBA.TGT9"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC10"/>
+			<table type="target" name="DBA.TGT10"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC11"/>
+			<table type="target" name="DBA.TGT11"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC12"/>
+			<table type="target" name="DBA.TGT12"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC13"/>
+			<table type="target" name="DBA.TGT13"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC14"/>
+			<table type="target" name="DBA.TGT14"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC15"/>
+			<table type="target" name="DBA.TGT15"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC16"/>
+			<table type="target" name="DBA.TGT16"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC17"/>
+			<table type="target" name="DBA.TGT17"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC18"/>
+			<table type="target" name="DBA.TGT18"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC19"/>
+			<table type="target" name="DBA.TGT19"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC20"/>
+			<table type="target" name="DBA.TGT20"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC21"/>
+			<table type="target" name="DBA.TGT21"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC22"/>
+			<table type="target" name="DBA.TGT22"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC23"/>
+			<table type="target" name="DBA.TGT23"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC24"/>
+			<table type="target" name="DBA.TGT24"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC25"/>
+			<table type="target" name="DBA.TGT25"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC26"/>
+			<table type="target" name="DBA.TGT26"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC27"/>
+			<table type="target" name="DBA.TGT27"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC28"/>
+			<table type="target" name="DBA.TGT28"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC29"/>
+			<table type="target" name="DBA.TGT29"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC30"/>
+			<table type="target" name="DBA.TGT30"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC31"/>
+			<table type="target" name="DBA.TGT31"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC32"/>
+			<table type="target" name="DBA.TGT32"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC33"/>
+			<table type="target" name="DBA.TGT33"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC34"/>
+			<table type="target" name="DBA.TGT34"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC35"/>
+			<table type="target" name="DBA.TGT35"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC36"/>
+			<table type="target" name="DBA.TGT36"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC37"/>
+			<table type="target" name="DBA.TGT37"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC38"/>
+			<table type="target" name="DBA.TGT38"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC39"/>
+			<table type="target" name="DBA.TGT39"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC40"/>
+			<table type="target" name="DBA.TGT40"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC41"/>
+			<table type="target" name="DBA.TGT41"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC42"/>
+			<table type="target" name="DBA.TGT42"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC43"/>
+			<table type="target" name="DBA.TGT43"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC44"/>
+			<table type="target" name="DBA.TGT44"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC45"/>
+			<table type="target" name="DBA.TGT45"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC46"/>
+			<table type="target" name="DBA.TGT46"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC47"/>
+			<table type="target" name="DBA.TGT47"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC48"/>
+			<table type="target" name="DBA.TGT48"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC49"/>
+			<table type="target" name="DBA.TGT49"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC50"/>
+			<table type="target" name="DBA.TGT50"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC51"/>
+			<table type="target" name="DBA.TGT51"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC52"/>
+			<table type="target" name="DBA.TGT52"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC53"/>
+			<table type="target" name="DBA.TGT53"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC54"/>
+			<table type="target" name="DBA.TGT54"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC55"/>
+			<table type="target" name="DBA.TGT55"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC56"/>
+			<table type="target" name="DBA.TGT56"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC57"/>
+			<table type="target" name="DBA.TGT57"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC58"/>
+			<table type="target" name="DBA.TGT58"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC59"/>
+			<table type="target" name="DBA.TGT59"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC60"/>
+			<table type="target" name="DBA.TGT60"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC61"/>
+			<table type="target" name="DBA.TGT61"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC62"/>
+			<table type="target" name="DBA.TGT62"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC63"/>
+			<table type="target" name="DBA.TGT63"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC64"/>
+			<table type="target" name="DBA.TGT64"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC65"/>
+			<table type="target" name="DBA.TGT65"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC66"/>
+			<table type="target" name="DBA.TGT66"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC67"/>
+			<table type="target" name="DBA.TGT67"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC68"/>
+			<table type="target" name="DBA.TGT68"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC69"/>
+			<table type="target" name="DBA.TGT69"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC70"/>
+			<table type="target" name="DBA.TGT70"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC71"/>
+			<table type="target" name="DBA.TGT71"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC72"/>
+			<table type="target" name="DBA.TGT72"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC73"/>
+			<table type="target" name="DBA.TGT73"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC74"/>
+			<table type="target" name="DBA.TGT74"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC75"/>
+			<table type="target" name="DBA.TGT75"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC76"/>
+			<table type="target" name="DBA.TGT76"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC77"/>
+			<table type="target" name="DBA.TGT77"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC78"/>
+			<table type="target" name="DBA.TGT78"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC79"/>
+			<table type="target" name="DBA.TGT79"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC80"/>
+			<table type="target" name="DBA.TGT80"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC81"/>
+			<table type="target" name="DBA.TGT81"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC82"/>
+			<table type="target" name="DBA.TGT82"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC83"/>
+			<table type="target" name="DBA.TGT83"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC84"/>
+			<table type="target" name="DBA.TGT84"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC85"/>
+			<table type="target" name="DBA.TGT85"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC86"/>
+			<table type="target" name="DBA.TGT86"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC87"/>
+			<table type="target" name="DBA.TGT87"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC88"/>
+			<table type="target" name="DBA.TGT88"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC89"/>
+			<table type="target" name="DBA.TGT89"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC90"/>
+			<table type="target" name="DBA.TGT90"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC91"/>
+			<table type="target" name="DBA.TGT91"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC92"/>
+			<table type="target" name="DBA.TGT92"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC93"/>
+			<table type="target" name="DBA.TGT93"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC94"/>
+			<table type="target" name="DBA.TGT94"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC95"/>
+			<table type="target" name="DBA.TGT95"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC96"/>
+			<table type="target" name="DBA.TGT96"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC97"/>
+			<table type="target" name="DBA.TGT97"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC98"/>
+			<table type="target" name="DBA.TGT98"/>
+		</tablemapping>
+		<tablemapping>
+			<table type="source" name="DBA.SRC99"/>
+			<table type="target" name="DBA.TGT99"/>
+		</tablemapping>
+	</subscription>
+</tablemappings>

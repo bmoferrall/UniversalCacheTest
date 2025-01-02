@@ -1,0 +1,312 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>CDCSolid - Class to implement CDC/TS functionality for Solid
+           Module will also install/uninstall CDC for Solid databases</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#examples">EXAMPLES</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>CDCSolid - Class to implement CDC/TS functionality for Solid (sub class of CDC)
+           Module will also install/uninstall CDC for Solid databases</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p>use IBM::UC::CDC::CDCSolid;</p>
+<p>#################
+# class methods #
+#################</p>
+<pre>
+ $ob = CDCSolid-&gt;createFromConfig($cdc_cfg,$solid);
+   where:
+     $cdc_cfg=configuration object of class CDCConfig describing cdc instance
+     $solid=database instance of class SolidDB</pre>
+<p>This constructor initialises itself from a configuration object defining parameters 
+for the CDC instance, and the encapsulated Solid database object.</p>
+<pre>
+ $ob = CDCSolid-&gt;createSimple($cdc_name, $cdc_port, $solid);
+   where:
+     $cdc_name=name of this cdc instance
+     $cdc_port=port number for this cdc instance
+     $solid=database instance of class SolidDB</pre>
+<p>This constructor initialises itself with a cdc instance name and port number, and
+the encapsulated Solid database object.</p>
+<pre>
+ CDCSolid-&gt;install([$i_to]) (or CDCSolid::install)
+  Install CDC for Solid from CVS repository, where:
+        $i_to is the destination installation directory and
+        Parameter can be excluded as it is defaulted in the Environment module
+        
+ CDCSolid::uninstall()</pre>
+<p>#######################
+# object data methods #
+#######################</p>
+<p>### get versions ###</p>
+<pre>
+ See CDC super class for available get methods</pre>
+<p>### set versions ###</p>
+<pre>
+ See CDC super class for available set methods</pre>
+<p>########################
+# other object methods #
+########################</p>
+<pre>
+ $ob-&gt;create();         # Create Solid CDC instance
+ $ob-&gt;delete();         # Delete Solid CDC instance
+ $ob-&gt;list();           # List available CDC instances
+ $ob-&gt;start();          # Start Solid CDC instance
+ $ob-&gt;stop();           # Stop Solid CDC instance</pre>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>The CDCSolid module is a sub class of CDC, and implements functionality specific to Solid
+CDC instances. It can be used to initialise, create, start, delete, and stop Solid CDC
+instances.</p>
+<p>Initialisation of the CDCSolid object's data can be done in several ways. Default values are used for 
+object parameters not explicitly specified in the object's creation.</p>
+<p>Valid configuration parameters and their default values follow (see CDCConfig.pm):</p>
+<pre>
+ ---------------------------------------------------------------------------------------------------------
+ Parameter              Description                                     Default value
+ ---------------------------------------------------------------------------------------------------------
+ ts_name                CDC instance name                               src_ts
+ ts_port                CDC instance communication port                 11101
+ ts_root                CDC root directory                              Environment module default 
+ ---------------------------------------------------------------------------------------------------------</pre>
+<p>if initialisation is via a configuration ini file the CDC section must, by default, start with [CDC]
+and end with [/CDC] or end of file, e.g.:</p>
+<pre>
+ [CDC]</pre>
+<pre>
+ ; Instance name for transformation server
+ ts_name=solsrc_ts</pre>
+<pre>
+ ; Communication port for transformation server
+ ts_port=11101</pre>
+<p>
+</p>
+<hr />
+<h1><a name="examples">EXAMPLES</a></h1>
+<p>Following are some examples of how to instantiate and use a CDCSolid object.</p>
+<pre>
+ # Create solid database object from simple parameters
+ # Create SolidCDC object from simple parameters
+ sub create_cdc_from_config
+ {
+        my $source = SolidDB-&gt;createSimple('/home/user/solid','src',2315);
+        $source-&gt;start();       
+        
+        my $cdc_sol = CDCSolid-&gt;createSimple('src_ts',11101,$source);
+        $cdc_sol-&gt;create();
+        $cdc_sol-&gt;start();
+        .
+        .
+        .
+        $cdc_sol-&gt;stop();
+        $cdc_sol-&gt;delete();
+        $source-&gt;stop();
+ }</pre>
+<pre>
+ # Create DatabaseConfig object from hash map and use it to create solid database object
+ # Create CDCConfig object from hash map
+ # Use both config objects to create CDC object
+ sub create_cdc_from_config
+ {
+        my $sol_values = { 
+                db_port =&gt; '2317', 
+                db_dir =&gt; 'sol_source',
+        };
+        my $source = SolidDB-&gt;createFromConfig(DatabaseConfig-&gt;createFromHash($sol_values));
+        $source-&gt;start();       
+        
+        my $cdc_values = {
+                ts_name =&gt; 'ts_source',
+                ts_port =&gt; 11121,
+        };
+        my $cdc_sol = CDCSolid-&gt;createFromConfig(CDCConfig-&gt;createFromHash($cdc_value),$source);
+        $cdc_sol-&gt;create();
+        $cdc_sol-&gt;start();
+        .
+        .
+        .
+        $cdc_sol-&gt;stop();
+        $cdc_sol-&gt;delete();
+        $source-&gt;stop();
+ }</pre>
+<pre>
+ # Create solid database object from ini file
+ # Create CDCConfig object from same ini file
+ # Use both config objects to create CDC object
+ sub create_cdc_from_file
+ {
+        my $source = SolidDB-&gt;createFromFile('solid_instance.ini'); # Load database section of ini file
+        $source-&gt;start();
+        
+        my $cdc_cfg = CDCConfig-&gt;new('solid_instance1.ini');
+        $cdc_cfg-&gt;initFromConfigFile(); # Load cdc-specific section of ini file</pre>
+<pre>
+        my $cdc_sol = CDCSolid-&gt;createFromConfig($cdc_cfg,$source);
+        $cdc_sol-&gt;create();
+        $cdc_sol-&gt;start();
+        .
+        .
+        .
+        $cdc_sol-&gt;stop();
+        $cdc_sol-&gt;delete();
+        $source-&gt;stop();
+ }</pre>
+<p>An example of automating the creation of source and target databases, setting up replication between
+tables in the databases and verifying that replication has taken place would be as follows:</p>
+<pre>
+ # Create subscription and mirror between Solid source and Solid target
+ sub replication_sol_to_sol
+ {
+        my $inp;
+        my ($env_parms,$dbvals_src,$dbvals_tgt);
+        my ($db_src, $db_tgt);
+        my ($cdc_src, $cdc_tgt);
+        my ($as_cfg, $mConsole);
+        my ($ds_src, $ds_tgt);
+        my $sub = 'subname';</pre>
+<pre>
+ eval { # trap errors so we can clean up before exiting</pre>
+<pre>
+        $env_parms = {
+                debug =&gt; 1,
+                smtp_server =&gt; 'D06DBE01',
+                cvs_user =&gt; 'dmbuild',
+                cvs_pass =&gt; 'dmbuild',
+                cvs_repository =&gt; ':pserver:dmbuild:dmbuild@dmccvs.torolab.ibm.com:/home/cvsuser/cvsdata',
+                cvs_home =&gt; '/home/db2inst1/cvs',
+                cvs_tag =&gt; 'HEAD',
+                cdc_solid_root_dir =&gt; '/home/db2inst1/Transformation Server for solidDB/',
+                ant_version =&gt; 'apache-ant-1.6.2',
+                solid_root_dir =&gt; '/home/db2inst1/soliddb-6.5/',
+                solid_licence_file =&gt; '/home/db2inst1/automation_workspace/Nightlies/solid.lic',
+                java_home =&gt; '/home/DownloadDirector/ibm-java2-i386-50/',
+                java6_home =&gt; '/home/DownloadDirector/ibm-java-i386-60/',
+        };
+        Environment-&gt;createFromConfig(EnvironmentConfig-&gt;createFromHash($env_parms));</pre>
+<pre>
+        # create and start source database
+        $dbvals_src = { 
+                db_port =&gt; '2315', 
+                db_dir =&gt; '/home/db2inst1/solid/sol_src',
+        };
+        $db_src = SolidDB-&gt;createFromConfig(DatabaseConfig-&gt;createFromHash($dbvals_src));
+        $db_src-&gt;start();</pre>
+<pre>
+        # create and start target database
+        $dbvals_tgt = { 
+                db_port =&gt; '2316', 
+                db_dir =&gt; '/home/db2inst1/solid/sol_tgt',
+        };
+        $db_tgt = SolidDB-&gt;createFromConfig(DatabaseConfig-&gt;createFromHash($dbvals_tgt));
+        $db_tgt-&gt;start();</pre>
+<pre>
+        # Set source and target table names for sql files
+        # %TABLE% in sql files will be replaced with table names specified here
+        $db_src-&gt;dbTableName('src');
+        $db_tgt-&gt;dbTableName('tgt');
+        $db_src-&gt;execSql('sol_createsrc.sql');  # Create table 'src'
+        $db_tgt-&gt;execSql('sol_createtgt.sql');  # Create table 'tgt'
+        
+        # create source CDC
+        $cdc_src = CDCSolid-&gt;createSimple('solsrc_ts',11101,$db_src);</pre>
+<pre>
+        # create target CDC
+        $cdc_tgt = CDCSolid-&gt;createSimple('soltgt_ts',11102,$db_tgt);</pre>
+<pre>
+        # create and start source/target cdc's
+        $cdc_src-&gt;create();
+        $cdc_tgt-&gt;create();
+        $cdc_src-&gt;start();
+        $cdc_tgt-&gt;start();</pre>
+<pre>
+        # Access server configuration 
+        $as_cfg = {ac_host =&gt; 'localhost',      # Access server host
+                                  ac_port =&gt; '10101',   # Access server port
+                                  ac_user =&gt; 'Admin',   # Access server user
+                                  ac_pass =&gt; 'admin123'};       # Access server password
+        
+        # Create mConsole/Access server instance
+        $mConsole = AccessServer-&gt;createFromConfig(AccessServerConfig-&gt;createFromHash($as_cfg));</pre>
+<pre>
+        # create datastores
+        $ds_src = $mConsole-&gt;createDatastoreSimple(
+                'solsrc_ds',            # datastore name
+                'Source datastore',     # datastore description
+                'localhost',            # datastore host
+                $cdc_src,               # cdc instance
+        );
+        $ds_tgt = $mConsole-&gt;createDatastoreSimple(
+                'soltgt_ds',            # datastore name
+                'Target datastore',     # datastore description
+                'localhost',            # datastore host
+                $cdc_tgt,               # cdc instance
+        );
+        $mConsole-&gt;source($ds_src);     # assign source datastore
+        $mConsole-&gt;target($ds_tgt);     # assign target datastore
+        
+        $mConsole-&gt;assignDatastoreUser($ds_src);
+        $mConsole-&gt;assignDatastoreUser($ds_tgt);</pre>
+<pre>
+        $mConsole-&gt;createSubscription($sub);    # Create subscription between source and target datastores
+        $mConsole-&gt;addMapping($sub);            # Add default mapping to subscription
+        $mConsole-&gt;startMirroring($sub);        # Start mirroring</pre>
+<pre>
+        $db_src-&gt;execSql('sol_insertsrc.sql');  # Insert rows into source table
+        sleep(15);                              # Allow mirroring to take effect
+        $db_tgt-&gt;execSql('sol_readtgt.sql');    # Read target table</pre>
+<pre>
+ };</pre>
+<pre>
+ # Error thrown in eval {...}
+ if ($@) { Environment::logf(&quot;\n\nErrors found: $@\n&quot;); }</pre>
+<pre>
+        # CLEANUP</pre>
+<pre>
+        $mConsole-&gt;stopMirroring($sub);         # Stop mirroring
+        $mConsole-&gt;deleteMapping($sub);         # Delete mapping
+        $mConsole-&gt;deleteSubscription($sub);    # Delete subscription</pre>
+<pre>
+        # Delete datastores
+        $mConsole-&gt;deleteDatastore($ds_tgt);
+        $mConsole-&gt;deleteDatastore($ds_src);</pre>
+<pre>
+        # stop and delete cdc instances
+        $cdc_src-&gt;stop();
+        $cdc_tgt-&gt;stop();
+        $cdc_src-&gt;delete();
+        $cdc_tgt-&gt;delete();</pre>
+<pre>
+        # shut down databases
+        $db_src-&gt;stop();
+        $db_tgt-&gt;stop();
+ }</pre>
+<p>If everything works as expected source and target tables should have the same content.</p>
+
+</body>
+
+</html>

@@ -1,0 +1,208 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Environment - class to store environment configuration</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>Environment - class to store environment configuration</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p>use IBM::UC::Environment;</p>
+<p>#################
+# class methods #
+#################</p>
+<pre>
+ The Environment Module contains two constructor methods, one of which would be invoked in a main driver
+ file, and a static method which returns the environment config object. The latter would be used by other
+ modules to access the environment information as the object can only be created once.</pre>
+<pre>
+ $ob = Environment-&gt;createFromFile($ini);
+   where:
+     $ini=configuration file</pre>
+<pre>
+ $ob = Environment-&gt;createFromConfig($config)
+  where:
+   $config=object of class EnvironmentConfig</pre>
+<pre>
+ $env = Environment::getEnvironment()
+  Static method which returns instance of Environment class</pre>
+<pre>
+ Environment::logf($msg[,$stdout])
+  where: $msg=message to print, $stdout (0/1) specifies whether to also print to stdout
+  Static method which prints $msg to logFile() and, optionally, stdout</pre>
+<pre>
+ Environment::fatal($msg)
+  where: $msg=message to print
+  Static method which calls logf($msg), sends email to emailAdmin() and exits</pre>
+<p>#######################
+# object data methods #
+#######################</p>
+<p>### get versions ###</p>
+<pre>
+ $os = $ob-&gt;getOSName()                         # operating system name (e.g., &quot;windows&quot; or &quot;unix&quot;)
+ $ps = $ob-&gt;getPathSeparator()          # Return os-specific path separator
+ $ps = $ob-&gt;getEnvSeparator()           # Return os-specific environment variable separator
+ $email = $ob-&gt;emailAdmin()                     # Email address of admin to whom emails are sent from fatal()
+ $flag = $ob-&gt;emailOnError()            # Flag controlling whether email is sent in fatal() routine
+ $dir = $ob-&gt;getStartDir()                      # current directory at time driver app is launched
+ $svr = $ob-&gt;smtpServer()                       # SMTP Server host name
+ $dbg = $ob-&gt;debugModeOn()                      # debug mode on/off
+ $dir = $ob-&gt;CDCSolidRootDir()          # Root directory of Transformation Server for DB2
+ $dir = $ob-&gt;CDCDb2RootDir()            # Root directory of Transformation Server for Solid
+ $dir = $ob-&gt;CDCInformixRootDir()       # Root directory of Transformation Server for Informix
+ $bits = $ob-&gt;CDCBits()                         # cpu architecture of hosting cdc server (32/64)
+ $bits = $ob-&gt;accessServerRootDir()     # Root directory of Transformation Access Server Control
+ $dir = $ob-&gt;solidRootDir()                     # SolidD installation root directory
+ $pck = $ob-&gt;solidPackage()                     # Solid Install package name
+ $lic = $ob-&gt;solidLicenceFile()         # Solid Licence file location
+ $env = $ob-&gt;testbedEnvName()           # Testbed environment file name
+ $bck = $ob-&gt;testbedBucket()            # Default testbed bucket
+ $dir = $ob-&gt;testbedHeadDir()           # Location of Testbed Head directory
+ $dir = $ob-&gt;testbedQAApprovedDir()     # Location of testbed QA_Approved directory
+ $user = $ob-&gt;cvsUser()                         # User name to access CVS repository
+ $pass = $ob-&gt;cvsPass()                         # User password to access CVS repository
+ $repos = $ob-&gt;cvsRepository()          # CVS repository location
+ $cvs = $ob-&gt;cvsBin()                           # CVS binary location
+ $home = $ob-&gt;cvsHome()                         # CVSROOT on client side
+ $tag = $ob-&gt;cvsTag()                           # Default Tag name for CVS branch
+ $ver = $ob-&gt;antVersion()                       # Version name of Ant utility to copy from repository
+ $dir = $ob-&gt;javaHome()                         # Location of Java 5 
+ $dir = $ob-&gt;javaSixHome()                      # Location of Java 6
+ $dir = $ob-&gt;msSdkHome()                        # Location of MsSdk
+ $dir = $ob-&gt;dotNetSdkHome()            # Location of dotnet Sdk
+ $dir = $ob-&gt;vstudioHome()                      # Location of Visual Studio</pre>
+<p>### set versions ###</p>
+<pre>
+ $ob-&gt;smtpServer('D06ML902')            
+ $ob-&gt;debugModeOn(1)                     
+ $ob-&gt;emailAdmin('xxx@yyy.com')
+ $ob-&gt;emailOnError(1)
+ $ob-&gt;CDCSolidRootDir('...',addpath)             
+ $ob-&gt;CDCDb2RootDir('...',addpath)               
+ $ob-&gt;CDCInformixRootDir('...',addpath)          
+ $ob-&gt;CDCBits(64)                       
+ $ob-&gt;accessServerRootDir('...',addpath)        
+ $ob-&gt;solidRootDir('...',addpath)
+ $ob-&gt;solidPackage('...')
+ $ob-&gt;solidLicenceFile('...')
+ $ob-&gt;testbedEnvName('...')
+ $ob-&gt;testbedBucket('...')
+ $ob-&gt;testbedHeadDir('...')             
+ $ob-&gt;testbedQAApprovedDir('...')       
+ $ob-&gt;cvsUser('...')
+ $ob-&gt;cvsPass('...')
+ $ob-&gt;cvsRepository('...')
+ $ob-&gt;cvsBin('...')
+ $ob-&gt;cvsHome('...')
+ $ob-&gt;cvsTag('...')
+ $ob-&gt;antVersion('...')
+ $ob-&gt;javaHome('...')
+ $ob-&gt;javaSixHome('...')
+ $ob-&gt;msSdkHome('...')
+ $ob-&gt;dotNetSdkHome('...')
+ $ob-&gt;vstudioHome('...')</pre>
+<p>########################
+# other object methods #
+########################</p>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>The Environment module stores 'static' environment information in a config object.</p>
+<p>Initialisation of an Environment instance is via various configuration parameters. Valid 
+configuration parameters and their default values follow (see EnvironmentConfig.pm):</p>
+<pre>
+ ---------------------------------------------------------------------------------------------------------
+ Parameter              Description                                     Default value
+ ---------------------------------------------------------------------------------------------------------
+ debug                  Debug mode (0/1)                                0
+ smtp_server            MTP server to process emails                    D06DBE01
+ email_admin            dmin contact                                    mooreof@ie.ibm.com
+ cvs_user               User name with access to cvs repository         dmbuild
+ cvs_pass               Password of cvs user                            dmbuild
+ cvs_repository         VS repository                                   :pserver:dmbuild\@dmccvs.torolab.ibm.com:/home/cvsuser/cvsdata
+ cvs_bin                Location of cvs program                         /usr/bin/cvs
+                                                                        c:\program files\CVS Suite\WinCvs\cvsnt\cvs.exe
+ cvs_home               local CVS home directory                        /home/user/cvs
+                                                                        c:\cvs
+ cvs_tag                Default CVS branch name                         HEAD
+ ant_version            Version of the ant compiler to build            apache-ant-1.6.2
+ cdc_solid_root_dir     Home directory of CDC for Solid                 /home/user/Transformation Server for solidDB
+                                                                        c:\program files\DataMirror\Transformation Server for solidDB
+ cdc_db2_root_dir       Home directory of CDC for DB2                   /home/user/Transformation Server for UDB
+                                                                        c:\program files\DataMirror\Transformation Server for UDB
+ cdc_bits               CPU architecture of Solid CDC Solid host        32
+ access_server_root_dir Access Server root directory                    /home/user/DataMirror/Transformation Server Access Control
+                                                                        c:\program files\DataMirror\Transformation Server Access Control
+ solid_package          Solid package name/location to install          /mnt/mastersoftware/Databases/solidDB/build\ 0010/CZ9H0EN_solidDB-6.5-linux-x86.bin
+                                                                        z:\Databases\solidDB\build 0010\CZ9H2EN_solidDB-6.5-w32.exe
+ solid_root_dir         Installation directory for Solid                /home/user/solid
+                                                                        c:\program files\solid
+ solid_licence_file     Name/location of solid licence file             'solid.lic' in start directory
+ testbed_envname        Testbed Environment file name                   environment.xml
+ testbed_bucket         Testbed bucket                                  TestBed_HEAD
+ testbed_head_dir       Location of Testbed (head branch)               .
+ testbed_qa_approved_dirLocation of Testbed (QA Approved branch)        .
+ java_home              Location of Java 5                              /home/user/ibm-java2-i386-50
+                                                                        c:\program files\java\jdk1.5.0_16\lib
+ java6_home             Location of Java 6                              /home/user/ibm-java-i386-60
+                                                                        c:\program files\java\jdk1.6.0_12\lib
+ # Windows specific
+ mssdk_home             MS SDK location                                 c:\dev\Microsoft SDKs\Windows\v6.1
+ dotnetsdk_home         Dotnet SDK location                             C:\dev\Microsoft SDKs\Windows\v6.1
+ vstudio_home           Visual studio home                              c:\dev\devstudio9
+ ---------------------------------------------------------------------------------------------------------</pre>
+<p>if initialisation is via a configuration ini file the Environment section must start with [ENVIRONMENT]
+and end with [/ENVIRONMENT] or end of file, e.g.:</p>
+<pre>
+ [ENVIRONMENT]</pre>
+<pre>
+ ; SMTP Server host name
+ smtp_server=D06ML902</pre>
+<pre>
+ ; Transformation server root directory
+ cdc_solid_root_dir=/home/db2inst1/Transformation Server for solidDB</pre>
+<pre>
+ ; bit size of processor hosting cdc server
+ cdc_bits=32</pre>
+<pre>
+ ; Access server root directory
+ access_server_root_dir=/home/db2inst1/DataMirror/Transformation Server Access Control
+
+</pre>
+<pre>
+ ; Testbed Head home directory
+ testbed_head_dir=/home/db2inst1/workspace/TestBed_HEAD/
+
+</pre>
+<pre>
+ etc.
+ 
+=cut
+</pre>
+
+</body>
+
+</html>

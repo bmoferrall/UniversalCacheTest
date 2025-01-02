@@ -1,0 +1,50 @@
+********************************************************************
+    Universal Cache: Perl automation framework
+    Updated:  March, 2010
+********************************************************************
+
+====================================================================
+DESCRIPTION
+====================================================================
+
+The Universal Cache automation framework is a perl-based collection
+of library modules that can be used to automate a variety of otherwise 
+time-consuming tasks. It is designed to be useable by a non-expert 
+perl programmer. There are also some more advanced features that would 
+suit someone with more expertise in perl programming, in particular 
+object-oriented perl.
+
+The framework supports Windows- and Linux-based operating systems.
+The host operating system (including whether the system is based on
+32- or 64-bit architecture) is detected by the framework and any
+OS-specific differences are handled automatically.
+
+The framework itself is located in the folder
+'%CDC_ROOT%/samples/ucautomation/include'
+(where %CDC_ROOT% is the location of Transformation Server for solidDB).
+To use the framework, either copy the contents of the include folder
+(i.e. from 'IBM' down) into a location that Perl can find (e.g.
+%PERL_ROOT%\site\lib). Alternatively, use the '-I %LIBPATH%' directive
+when invoking a perl script, where %LIBPATH% is the parent directory
+of the 'IBM' folder (i.e. '%CDC_ROOT%/samples/ucautomation/include').
+
+Perl documentation (PODs) on each module in the framework is located
+in '%CDC_ROOT%/samples/ucautomation/perldoc'. The main modules
+will have an EXAMPLES section in their POD to highlight their main
+features. A couple of samples are located in 
+'%CDC_ROOT%/samples/ucautomation/samples'.
+Refer to the README in the samples folder for details on how to run them.
+
+Some of the main features of the framework are as follows:
+
+ - Install components of Universal Cache
+ - Create databases of various types (DB2, Solid, Informix) and execute
+   SQL statements against them
+ - Create/start Transformation Server instances for any of the 
+   supported database types
+ - Create datastores, subscriptions and mappings and initiate
+   mirroring
+ - Clean up by deleting any created components
+
+It is assumed that an up-to-date implementation of perl resides on the 
+host operating system.

@@ -1,0 +1,157 @@
+********************************************************************
+    Universal Cache: Perl automation samples
+    Updated:  March, 2010
+********************************************************************
+
+====================================================================
+CONTENTS
+====================================================================
+
+ - Description
+ - Prerequisites to run samples
+ - Sample 1 (Local SolidDB publisher and Local SolidDB subscriber)
+ - Sample 2 (Local SolidDB publisher and Remote DB2 subscriber)
+ - Command-line commands to run scripts
+
+
+====================================================================
+DESCRIPTION
+====================================================================
+
+The %CDC_ROOT%/samples/ucautomation folder (where %CDC_ROOT% is 
+the location of Transformation Server for SolidDB) contains an
+automation framework implemented using Perl.
+This framework can be used to automate a variety of tasks involving,
+for example, subscription setup, mappings between source/publisher 
+and target/subscriber instances, CDC instance creation, database 
+creation, running sql queries, etc. Included here are two samples
+to demonstrate some of the features of the framework.
+
+====================================================================
+PREREQUISITES TO RUN SAMPLES
+====================================================================
+
+ - Operating system is Windows- or Linux-based
+ - An up-to-date version of perl is installed on the system
+ - Perl UC automation framework is installed in a location where Perl 
+   can find it;
+   i.e., in one of the perl include paths, e.g. %PERL_ROOT%/site/lib.
+   Alternatively, start perl with the '-I %libpath%' option to 
+   explicitly point to the installed location of framework libraries
+ - Access Server is installed and running in the background, and an 
+   admin account has been created. The Windows installation of Access
+   Server will create an admin account and start it running in the
+   background; on Linux systems, an Admin account must be created 
+   manually and the server started
+ - SolidDB is installed
+ - A valid solid licence file is available (its location must be
+   specified in the environment configuration of the samples)
+ - Transformation Server for Solid is installed
+ - Java 5 is installed
+ - Paths to all the above must be set correctly in the sample environment 
+   configuration (see sample scripts for details).
+ - For the second sample, DB2 and Transformation Server for DB2 must 
+   both be installed on a second machine (can also be on the same
+   machine as the publisher, provided the 'host' property for the
+   subscriber CDC instance is set to 'localhost').
+   A DB2 database and schema must exist and be started; a CDC
+   instance must be created and started
+ - On Linux the user should have DB2 admin rights  
+ - On Windows the DB2 test should be run from within a DB2 command window  
+
+====================================================================
+SAMPLE 1 (Local SolidDB publisher and Local SolidDB subscriber)
+====================================================================
+
+Sample 1 is located in %CDC_ROOT%/samples/ucautomation/samples.
+This sample demonstrates mirroring between a source/publisher SolidDB
+instance and a target/subscriber SolidDB instance. Specifically, this
+sample does the following:
+
+ - create a source/publisher SolidDB database instance and start it
+ - create a table 'src' in the source database
+ - create a target/subscriber SolidDB database instance and start it
+ - create a table 'tgt' in the target database with the same signature
+   as the source table 'src'
+ - create a source CDC Transformation Server instance and start it
+ - create a target CDC Transformation Server instance and start it
+ - create a source datastore object
+ - assign access server admin user to the target datastore
+ - create a target datastore object
+ - assign access server admin user to the target datastore
+ - create a subscription between source and target datastores
+ - create a simple mapping from the table 'src' in source/publisher to
+   the table 'tgt' in the target/subscriber
+ - initiate mirroring from publisher to subscriber
+ - verify that the contents of the table 'src' are copied over to the
+   target 'tgt' in the SolidDB database by running a 'select *' on the
+   target and displaying the output in a text file
+ - prompt user to start cleanup:
+   cleanup restores the system to its original state, with the exception
+   that it leaves the created SolidDB databases intact
+ 
+  
+====================================================================
+SAMPLE 2 (Local SolidDB publisher and Remote DB2 subscriber)
+====================================================================
+
+Sample 2 is located in %CDC_ROOT%/samples/ucautomation/samples.
+This sample demonstrates mirroring between a local source/publisher SolidDB 
+instance (which we create), and a remote target/subscriber DB2 instance 
+(which exists and is running).
+
+ - create a source/publisher SolidDB database instance and start it
+ - create a table 'src' in the source database
+ - create a virtual representation of the target/subscriber DB2 database
+   instance on a remote machine (can also be on same machine as source,
+   see below). Here we assume that the user has created a DB2 database and 
+   schema and that the database manager is running.
+   The default setup is as follows (change script defaults if actual setup
+   differs):
+   Database Type: DB2
+   Database Name: TEST
+   Database User: db2admin
+   Database Password: db2admin
+   Database Schema: db2schema
+   Database Port: 50000
+ - create a source CDC Transformation Server instance and start it
+ - create a virtual representation of the target CDC Transformation Server 
+   instance on a remote machine (can be on same machine as source if
+   'host' property is set to 'localhost').
+   Here we assume that the user has created a CDC instance and started it.
+   The default setup is as follows (change script defaults if actual setup
+   differs):
+   CDC instance name: db2tgt_ts
+   CDC port number: 11102
+   CDC host name: localhost
+ - create a source datastore object
+ - assign access server admin user to the target datastore
+ - create a target datastore object
+ - assign access server admin user to the target datastore
+ - create a subscription between source and target datastores
+ - create a simple mapping from the table 'src' in source/publisher to
+   the table 'tgt' in the target/subscriber
+ - initiate mirroring from publisher to subscriber
+ - pause to allow user to verify that mirroring has taken effect
+ - prompt user to start cleanup:
+   cleanup restores the system to its original state, with the exception
+   that it leaves the created SolidDB database intact
+
+====================================================================
+COMMAND-LINE COMMANDS TO RUN SCRIPTS
+====================================================================
+
+Before running either sample ensure that the environment 
+configuration objects in each script match the setup of the local machine
+
+In the following, replace %CDC_ROOT% with the root directory of 
+Transformation Server for solidDB
+
+SAMPLE 1:
+cd %CDC_ROOT%\samples\ucautomation\samples
+perl -I '%CDC_ROOT%\samples\ucautomation\include' sample1_mirroring_solid_to_solid.pl
+
+SAMPLE 2:
+For Windows, open DB2 command window.
+cd %CDC_ROOT%\samples\ucautomation\samples
+perl -I '%CDC_ROOT%\samples\ucautomation\include' sample2_mirroring_solid_to_db2.pl
